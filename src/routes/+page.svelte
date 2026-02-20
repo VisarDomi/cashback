@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
 
-	type State = 'input' | 'valid' | 'invalid';
+	type State = 'home' | 'scanner' | 'manual' | 'valid' | 'invalid';
 
 	interface Reward {
 		discount: string;
@@ -38,50 +38,166 @@
 		}
 	};
 
-	let state = $state<State>('input');
+	let state = $state<State>('home');
 	let code = $state('');
 	let reward = $state<Reward | null>(null);
+	let manualInput = $state('');
+	let cameraError = $state('');
+	let videoEl: HTMLVideoElement;
+	let scanner: any = null;
 
-	function verify() {
-		const normalized = code.trim().toUpperCase();
-		const found = REWARDS[normalized];
+	function extractCode(raw: string): string | null {
+		// From a cashback-biz URL like ?code=XXXXXX
+		try {
+			const url = new URL(raw);
+			const c = url.searchParams.get('code');
+			if (c && /^[A-Z0-9]{6}$/i.test(c)) return c.toUpperCase();
+		} catch {
+			// Not a URL — try as raw code
+		}
+		const trimmed = raw.trim().toUpperCase();
+		if (/^[A-Z0-9]{6}$/.test(trimmed)) return trimmed;
+		return null;
+	}
+
+	function verify(c: string) {
+		code = c;
+		const found = REWARDS[c];
 		if (found) {
 			reward = found;
 			state = 'valid';
 		} else {
 			state = 'invalid';
 		}
+		stopScanner();
+	}
+
+	function goScanner() {
+		state = 'scanner';
+	}
+
+	function goManual() {
+		manualInput = '';
+		state = 'manual';
+		stopScanner();
 	}
 
 	function reset() {
 		code = '';
 		reward = null;
-		state = 'input';
+		manualInput = '';
+		state = 'home';
 		history.replaceState(null, '', '/');
 	}
 
-	function handleInput(e: Event) {
+	function submitManual() {
+		const c = extractCode(manualInput);
+		if (c) {
+			verify(c);
+		}
+	}
+
+	function handleManualInput(e: Event) {
 		const input = e.target as HTMLInputElement;
-		code = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+		manualInput = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+	}
+
+	async function startScanner() {
+		try {
+			const QrScanner = (await import('qr-scanner')).default;
+			scanner = new QrScanner(
+				videoEl,
+				(result: { data: string }) => {
+					const c = extractCode(result.data);
+					if (c) verify(c);
+				},
+				{
+					preferredCamera: 'environment',
+					highlightScanRegion: true,
+					highlightCodeOutline: true,
+				}
+			);
+			await scanner.start();
+			cameraError = '';
+		} catch (err: any) {
+			cameraError = err?.message || 'Kamera nuk u aktivizua';
+		}
+	}
+
+	function stopScanner() {
+		if (scanner) {
+			scanner.stop();
+			scanner.destroy();
+			scanner = null;
+		}
 	}
 
 	onMount(() => {
 		const urlCode = page.url.searchParams.get('code');
 		if (urlCode) {
-			code = urlCode.toUpperCase();
-			verify();
+			const c = extractCode(urlCode);
+			if (c) verify(c);
+		}
+	});
+
+	onDestroy(() => {
+		stopScanner();
+	});
+
+	$effect(() => {
+		if (state === 'scanner' && videoEl) {
+			startScanner();
 		}
 	});
 </script>
 
 <div class="app">
-	{#if state === 'input'}
-		<div class="verify-view">
-			<div class="header">
-				<span class="header-icon">🏪</span>
-				<h1>Verifiko kodin</h1>
-				<p class="subtitle">Shkruaj kodin 6-shkronjësh të klientit</p>
+	{#if state === 'home'}
+		<div class="home-view">
+			<div class="home-hero">
+				<span class="home-icon">🏪</span>
+				<h1>Verifiko zbritjen</h1>
+				<p class="subtitle">Skano kodin QR të klientit për të verifikuar zbritjen</p>
 			</div>
+
+			<div class="actions">
+				<button class="btn-primary" onclick={goScanner}>Skano kodin e klientit</button>
+				<button class="link-btn" onclick={goManual}>Shkruaj kodin manualisht</button>
+			</div>
+		</div>
+
+	{:else if state === 'scanner'}
+		<div class="scanner-view">
+			<h1>Skano kodin</h1>
+			<p class="subtitle">Drejto kamerën te ekrani i klientit</p>
+
+			<div class="viewfinder">
+				<!-- svelte-ignore element_invalid_self_closing_tag -->
+				<video bind:this={videoEl} playsinline />
+				{#if cameraError}
+					<div class="camera-error">
+						<span class="error-icon">⚠</span>
+						<p>{cameraError}</p>
+						<button class="link-btn" onclick={goManual}>Shkruaj kodin manualisht</button>
+					</div>
+				{/if}
+				<div class="scan-corners">
+					<span class="corner tl"></span>
+					<span class="corner tr"></span>
+					<span class="corner bl"></span>
+					<span class="corner br"></span>
+				</div>
+			</div>
+
+			<div class="actions">
+				<button class="link-btn" onclick={goManual}>Shkruaj kodin manualisht</button>
+			</div>
+		</div>
+
+	{:else if state === 'manual'}
+		<div class="manual-view">
+			<h1>Vendos kodin</h1>
+			<p class="subtitle">Shkruaj kodin 6-shkronjësh të klientit</p>
 
 			<div class="code-input-group">
 				<input
@@ -89,19 +205,19 @@
 					inputmode="text"
 					autocapitalize="characters"
 					maxlength="6"
-					value={code}
-					oninput={handleInput}
-					onkeydown={(e) => e.key === 'Enter' && code.length === 6 && verify()}
+					value={manualInput}
+					oninput={handleManualInput}
+					onkeydown={(e) => e.key === 'Enter' && manualInput.length === 6 && submitManual()}
 					placeholder="P.sh. {SAMPLE_CODE}"
 					class="code-input"
 				/>
-				<p class="input-hint">Kodi gjendet në ekranin e klientit</p>
 			</div>
 
 			<div class="actions">
-				<button class="btn-primary" onclick={verify} disabled={code.length !== 6}>
+				<button class="btn-primary" onclick={submitManual} disabled={manualInput.length !== 6}>
 					Verifiko
 				</button>
+				<button class="link-btn" onclick={reset}>Kthehu</button>
 			</div>
 		</div>
 
@@ -177,34 +293,61 @@
 	h2 { font-size: 22px; font-weight: 700; }
 	.subtitle { font-size: 15px; color: var(--text-dim); margin-bottom: 24px; }
 
-	.header { text-align: center; padding: 32px 0 24px; }
-	.header-icon { font-size: 48px; display: block; margin-bottom: 12px; }
-	.header .subtitle { margin-bottom: 0; }
+	/* Home */
+	.home-view { display: flex; flex-direction: column; flex: 1; }
+	.home-hero {
+		flex: 1; display: flex; flex-direction: column;
+		align-items: center; justify-content: center; text-align: center;
+	}
+	.home-icon { font-size: 56px; margin-bottom: 16px; }
+	.home-hero h1 { margin-bottom: 8px; }
+	.home-hero .subtitle { margin-bottom: 0; }
 
-	.verify-view { display: flex; flex-direction: column; flex: 1; }
+	/* Scanner */
+	.scanner-view { display: flex; flex-direction: column; flex: 1; }
+
+	.viewfinder {
+		position: relative; width: 100%; aspect-ratio: 1;
+		background: var(--surface); border-radius: 16px;
+		overflow: hidden; margin-bottom: 24px;
+	}
+
+	.viewfinder video { width: 100%; height: 100%; object-fit: cover; }
+
+	.scan-corners { position: absolute; inset: 20%; pointer-events: none; }
+	.corner {
+		position: absolute; width: 24px; height: 24px;
+		border-color: var(--accent-light); border-style: solid; border-width: 0;
+	}
+	.corner.tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-top-left-radius: 8px; }
+	.corner.tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; border-top-right-radius: 8px; }
+	.corner.bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; border-bottom-left-radius: 8px; }
+	.corner.br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-bottom-right-radius: 8px; }
+
+	.camera-error {
+		position: absolute; inset: 0;
+		display: flex; flex-direction: column; align-items: center; justify-content: center;
+		gap: 8px; background: var(--surface); padding: 24px; text-align: center;
+	}
+	.error-icon { font-size: 32px; }
+	.camera-error p { font-size: 14px; color: var(--text-dim); }
+
+	/* Manual */
+	.manual-view { display: flex; flex-direction: column; flex: 1; }
 	.code-input-group { margin-bottom: 24px; }
 
 	.code-input {
-		width: 100%;
-		padding: 18px 16px;
-		background: var(--surface);
-		border: 1px solid var(--border);
-		border-radius: 12px;
-		color: var(--text);
-		font-family: 'SF Mono', 'Fira Code', monospace;
-		font-size: 28px;
-		font-weight: 700;
-		letter-spacing: 8px;
-		text-align: center;
-		text-transform: uppercase;
-		outline: none;
-		transition: border-color 0.15s;
+		width: 100%; padding: 18px 16px;
+		background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+		color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace;
+		font-size: 28px; font-weight: 700; letter-spacing: 8px;
+		text-align: center; text-transform: uppercase;
+		outline: none; transition: border-color 0.15s;
 	}
-
 	.code-input:focus { border-color: var(--accent); }
 	.code-input::placeholder { color: var(--text-dim); font-size: 16px; letter-spacing: 4px; font-weight: 400; }
-	.input-hint { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 8px; }
 
+	/* Result */
 	.result-view { display: flex; flex-direction: column; flex: 1; gap: 16px; }
 	.verified-badge, .invalid-badge { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
 
@@ -215,7 +358,6 @@
 		font-size: 24px; font-weight: 700;
 		animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
-
 	.verified-badge h2 { color: var(--green); }
 
 	.x-anim {
@@ -225,7 +367,6 @@
 		font-size: 24px; font-weight: 700;
 		animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
-
 	.invalid-badge h2 { color: var(--red); }
 
 	@keyframes pop {
@@ -249,6 +390,7 @@
 	.value.mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--text-dim); }
 	.dim { color: var(--text-dim); margin-top: 4px; }
 
+	/* Buttons */
 	.actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-top: 16px; padding-bottom: env(safe-area-inset-bottom, 16px); }
 
 	.btn-primary {
@@ -257,7 +399,13 @@
 		font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer;
 		transition: background 0.15s;
 	}
-
 	.btn-primary:hover { background: var(--accent-light); }
 	.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+	.link-btn {
+		background: none; border: none; color: var(--text-dim);
+		font-size: 14px; font-family: inherit; cursor: pointer;
+		padding: 8px; text-decoration: underline; text-underline-offset: 3px;
+	}
+	.link-btn:hover { color: var(--accent-light); }
 </style>
