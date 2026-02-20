@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Cashback — Skano faturën</title>
+	<title>Cashback</title>
 </svelte:head>
 
 {@render children()}
