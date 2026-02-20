@@ -1,3 +1,35 @@
+# Feedback
+
+## Eri's Feedback (Feb 20, 2026)
+
+**Overall:** Good pitch deck, plan makes sense but is very heavy-loaded.
+
+**Core critique:** The current deck covers 10 years of vision across 4 phases. That's useless for actual execution. You can't pitch someone on the distant future when 4 critical steps need to go right first.
+
+**What's needed: A separate pitch deck focused ONLY on Step 1.**
+
+This deck should answer:
+- When you sit down for coffee with someone, what exactly do you say?
+- How do you explain it in 3 sentences so they get it?
+- Which specific people do you meet? Names, not categories.
+
+**Concrete action items from Eri:**
+1. Build a demo app (can be done in ~7.5 hours)
+2. Create a step-by-step execution strategy with very detailed info
+3. Go to Conad at Tegu, ask for the manager
+4. Do web research on who these managers are, cross-reference LinkedIn
+5. Get actual phone numbers
+6. Actually talk to the people
+7. Prepare a 3-sentence pitch. Trial and error until it works.
+
+**On the UK coalition comparison:** "Earn at Conad, use at Neptun" — this existed in the UK (Nectar) but broke down because companies eventually opened their own cashback programs. Eri's take: "It's a good problem to have" — meaning if you get big enough that partners want to leave, you've already won.
+
+**Bottom line:** "If what I'm telling you here turns you off, leave it, you're wasting your time." The hard part is sales and execution, not the tech or the vision.
+
+---
+
+# Original Research Notes
+
 Alright, here's everything synthesized into what actually matters for you.
                                                                                                                         
   ShopBack's Journey - The Cliff Notes
