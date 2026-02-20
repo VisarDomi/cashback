@@ -104,7 +104,6 @@
 					preferredCamera: 'environment',
 					highlightScanRegion: true,
 					highlightCodeOutline: true,
-					maxScansPerSecond: 2,
 				}
 			);
 			await scanner.start();
