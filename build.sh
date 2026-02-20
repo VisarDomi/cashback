@@ -8,11 +8,9 @@ mkdir -p dist
 doc_links=""
 for md_file in docs/*.md; do
   name=$(basename "$md_file" .md)
-  # Convert filename to display name: "platform-research" → "Platform Research"
-  display=$(echo "$name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-  doc_links="${doc_links}<a href=\"/${name}\">${display}</a>"
+  doc_links="${doc_links}<a href=\"/${name}\">${name}.md</a>"
 done
-doc_list_html="<div class=\"doc-list\">${doc_links}</div>"
+doc_list_html="<div id=\"doc-nav\" class=\"doc-list\">${doc_links}</div>"
 
 # --- Build slideshow (index.html) with injected doc list ---
 sed "s|<!-- DOCS_LIST -->|${doc_list_html}|" slideshow.html > dist/index.html
