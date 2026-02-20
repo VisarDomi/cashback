@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 
-	type State = 'scanner' | 'manual' | 'result';
+	type State = 'home' | 'scanner' | 'manual' | 'result';
 
 	interface ReceiptData {
 		iic: string;
@@ -17,7 +17,7 @@
 		prc: '850.00'
 	};
 
-	let state = $state<State>('scanner');
+	let state = $state<State>('home');
 	let receipt = $state<ReceiptData | null>(null);
 	let manualInput = $state('');
 	let manualError = $state('');
@@ -82,6 +82,10 @@
 		}
 	}
 
+	function goScanner() {
+		state = 'scanner';
+	}
+
 	function scanAnother() {
 		receipt = null;
 		manualError = '';
@@ -137,15 +141,10 @@
 		}
 	}
 
-	onMount(() => {
-		if (state === 'scanner') startScanner();
-	});
-
 	onDestroy(() => {
 		stopScanner();
 	});
 
-	// Restart scanner when returning to scanner state
 	$effect(() => {
 		if (state === 'scanner' && videoEl) {
 			startScanner();
@@ -154,7 +153,22 @@
 </script>
 
 <div class="app">
-	{#if state === 'scanner'}
+	{#if state === 'home'}
+		<div class="home-view">
+			<div class="home-hero">
+				<span class="home-icon">📷</span>
+				<h1>Skano faturën</h1>
+				<p class="subtitle">Skano kodin QR të faturës për të marrë cashback</p>
+			</div>
+
+			<div class="actions">
+				<button class="btn-primary" onclick={goScanner}>Hap kamerën</button>
+				<button class="btn-secondary" onclick={trySample}>Provo me shembull</button>
+				<button class="link-btn" onclick={goManual}>Shkruaj NIVF manualisht</button>
+			</div>
+		</div>
+
+	{:else if state === 'scanner'}
 		<div class="scanner-view">
 			<h1>Skano faturën</h1>
 			<p class="subtitle">Drejto kamerën te kodi QR i faturës</p>
@@ -282,6 +296,53 @@
 		font-size: 15px;
 		color: var(--text-dim);
 		margin-bottom: 24px;
+	}
+
+	/* Home */
+	.home-view {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.home-hero {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.home-icon {
+		font-size: 56px;
+		margin-bottom: 16px;
+	}
+
+	.home-hero h1 {
+		margin-bottom: 8px;
+	}
+
+	.home-hero .subtitle {
+		margin-bottom: 0;
+	}
+
+	.btn-secondary {
+		width: 100%;
+		padding: 14px;
+		background: var(--surface);
+		color: var(--text);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		font-size: 16px;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition: border-color 0.15s;
+	}
+
+	.btn-secondary:hover {
+		border-color: var(--accent);
 	}
 
 	/* Scanner */
