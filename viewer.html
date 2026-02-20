@@ -301,10 +301,10 @@
   <a href="/" class="brand">cashback</a>
   <div class="divider"></div>
   <a href="/">Slideshow</a>
-  <a href="/viewer.html?file=condense.md">Brainstorm</a>
-  <a href="/viewer.html?file=platform-research.md">Research</a>
-  <a href="/viewer.html?file=feedback.md">Feedback</a>
-  <a href="/viewer.html?file=temp.md">Notes</a>
+  <a href="/condense.md">Brainstorm</a>
+  <a href="/platform-research.md">Research</a>
+  <a href="/feedback.md">Feedback</a>
+  <a href="/temp.md">Notes</a>
 </nav>
 
 <div class="content">
@@ -314,13 +314,15 @@
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const file = params.get('file');
+  // Extract filename from path: /condense.md → condense.md
+  const pathMatch = window.location.pathname.match(/^\/([a-zA-Z0-9_-]+\.md)$/);
+  const file = pathMatch ? pathMatch[1] : null;
   const output = document.getElementById('output');
 
   // Highlight active nav link
   document.querySelectorAll('#navbar a').forEach(a => {
-    if (a.href === window.location.href || a.href === window.location.origin + window.location.pathname + window.location.search) {
+    const linkPath = new URL(a.href).pathname;
+    if (linkPath === window.location.pathname) {
       a.classList.add('active');
     }
   });
@@ -340,11 +342,11 @@
       <ul class="file-list">
         ${docs.map(d => `
           <li>
-            <a href="?file=${d.file}">
+            <a href="/${d.file}">
               <div class="file-icon">&#128196;</div>
               <div>
                 <div class="file-name">${d.name}</div>
-                <div class="file-path">docs/${d.file} &mdash; ${d.desc}</div>
+                <div class="file-path">/${d.file} &mdash; ${d.desc}</div>
               </div>
             </a>
           </li>
@@ -354,11 +356,12 @@
   } else {
     fetch(`/docs/${file}`)
       .then(r => {
-        if (!r.ok) throw new Error(`File not found: docs/${file}`);
+        if (!r.ok) throw new Error(`File not found: ${file}`);
         return r.text();
       })
       .then(md => {
         output.innerHTML = marked.parse(md);
+        document.title = file.replace('.md', '') + ' — Cashback Platform';
       })
       .catch(err => {
         output.innerHTML = `<div class="error"><strong>Error:</strong> ${err.message}</div>`;
