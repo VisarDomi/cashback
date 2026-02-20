@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cashback Platform Albania</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --blue: #3b82f6;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .deck {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 60px 80px;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: linear-gradient(transparent, var(--bg) 40%);
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .nav button {
+    pointer-events: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .nav button:hover { background: var(--accent); border-color: var(--accent); }
+  .nav button:disabled { opacity: 0.3; cursor: default; }
+  .nav button:disabled:hover { background: var(--surface2); border-color: var(--border); }
+
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+    z-index: 101;
+  }
+
+  .slide-counter {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    pointer-events: auto;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--accent-light);
+  }
+
+  .subtitle {
+    font-size: 20px;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  p, li {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .dim { color: var(--text-dim); }
+
+  ul { list-style: none; padding: 0; }
+  ul li { padding: 6px 0; padding-left: 24px; position: relative; }
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Layout helpers */
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+    align-items: start;
+    margin-top: 24px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    flex: 1;
+    align-items: start;
+    margin-top: 24px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .card h3 { margin-bottom: 12px; }
+  .card p { font-size: 16px; }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  .tag-green { background: #22c55e22; color: var(--green); border: 1px solid #22c55e44; }
+  .tag-red { background: #ef444422; color: var(--red); border: 1px solid #ef444444; }
+  .tag-blue { background: #3b82f622; color: var(--blue); border: 1px solid #3b82f644; }
+  .tag-orange { background: #f59e0b22; color: var(--orange); border: 1px solid #f59e0b44; }
+  .tag-purple { background: #6366f122; color: var(--accent-light); border: 1px solid #6366f144; }
+
+  .stat-row {
+    display: flex;
+    gap: 32px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat .number {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--accent-light);
+    line-height: 1;
+  }
+
+  .stat .label {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .flow-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 15px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: var(--text-dim);
+    margin: 16px 0;
+  }
+
+  .flow-box .highlight { color: var(--accent-light); font-weight: 600; }
+  .flow-box .green { color: var(--green); }
+  .flow-box .orange { color: var(--orange); }
+  .flow-box .red { color: var(--red); }
+
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin-top: 16px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 12px 0;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .year {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-light);
+  }
+
+  .timeline-item .event {
+    font-size: 16px;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--surface);
+    color: var(--accent-light);
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .warning-box {
+    background: #ef444415;
+    border: 1px solid #ef444444;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .warning-box h3 { color: var(--red); }
+
+  .success-box {
+    background: #22c55e15;
+    border: 1px solid #22c55e44;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .success-box h3 { color: var(--green); }
+
+  .phone-mockup {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    padding: 20px;
+    max-width: 280px;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .phone-mockup .screen-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+
+  .spacer { flex: 1; }
+
+  .slide-content { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+
+  @media (max-width: 900px) {
+    .slide { padding: 40px 32px; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .stat .number { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide active" data-slide="0">
+    <div class="center">
+      <div>
+        <span class="tag tag-purple">Brainstorm 2026</span>
+        <h1 style="font-size:56px; margin-top: 24px;">Cashback Platform<br>Albania</h1>
+        <p class="subtitle" style="max-width: 600px; margin: 24px auto 0;">
+          Centralizing loyalty programs across Albanian businesses.<br>
+          Building the foundation for cashless payments.
+        </p>
+        <div class="stat-row" style="justify-content: center; margin-top: 40px;">
+          <div class="stat"><div class="number">2.8M</div><div class="label">Population</div></div>
+          <div class="stat"><div class="number">0</div><div class="label">Competitors</div></div>
+          <div class="stat"><div class="number">85%</div><div class="label">Internet Penetration</div></div>
+          <div class="stat"><div class="number">2030</div><div class="label">Cashless Goal</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: The Two Visions -->
+  <div class="slide" data-slide="1">
+    <h2>Two Visions</h2>
+    <p class="subtitle">The ideal and the realistic. One leads to the other.</p>
+    <div class="two-col">
+      <div class="card">
+        <span class="tag tag-blue">Long-term</span>
+        <h3 style="color: var(--blue);">Vision A: Albanian Alipay</h3>
+        <p>A phone-based payment platform that lets every Albanian pay for everything from their phone. Built on Albania's own infrastructure (e-Albania + fiskalizimi). Not dependent on Apple, Google, or any foreign company.</p>
+        <br>
+        <p class="dim">This is the endgame. Not the starting point. Requires EMI license, significant capital, and proven traction.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green">Start here</span>
+        <h3 style="color: var(--green);">Vision B: Loyalty Aggregator</h3>
+        <p>Centralize loyalty programs from Albanian companies (Neptun, Conad, BKT, etc.) into one app. Users earn rewards across all partners. Companies get cheaper, better loyalty infrastructure.</p>
+        <br>
+        <p class="dim">This builds the user base, merchant relationships, and data needed for Vision A. No banking license required.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Why Albania, Why Now -->
+  <div class="slide" data-slide="2">
+    <h2>Why Albania, Why Now</h2>
+    <p class="subtitle">The government is building the infrastructure for us.</p>
+    <div class="two-col">
+      <div>
+        <div class="success-box">
+          <h3>Government Push for Cashless</h3>
+          <ul>
+            <li>PM Rama: cashless Albania by 2030</li>
+            <li>Cash limits lowered: 100K ALL (B2B), 500K ALL (individuals)</li>
+            <li>All businesses must accept cards by end of 2026</li>
+            <li>SEPA integration: operational October 2025</li>
+            <li>Instant payments infrastructure being built</li>
+          </ul>
+        </div>
+        <div class="success-box" style="margin-top: 16px;">
+          <h3>Fiskalizimi = Our Secret Weapon</h3>
+          <ul>
+            <li>Every receipt has a QR code since 2021</li>
+            <li>Verified by the state in real-time (NIVF)</li>
+            <li>Contains: merchant ID, items, amounts, VAT, date</li>
+            <li>Third-party APIs exist (fature.al)</li>
+            <li>Better infrastructure than US cashback apps have</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>The Market Gap</h3>
+          <p>No cashback aggregator exists in Albania. Zero. The market is completely empty. Global players don't operate here.</p>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <h3>The Shadow Economy Problem</h3>
+          <p>Albania's informal economy is 30-50% of GDP. Consumers don't always demand receipts. A platform that rewards scanning receipts directly supports tax compliance. This is the kind of thing that gets government support.</p>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <h3>The Leapfrog Opportunity</h3>
+          <p>Less legacy infrastructure to replace. Small population moves faster. Kenya skipped credit cards with M-Pesa. Albania can skip the Visa/Mastercard era.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Albania by the Numbers -->
+  <div class="slide" data-slide="3">
+    <h2>Albania: The Landscape</h2>
+    <p class="subtitle">Strengths to leverage and challenges to address.</p>
+    <div class="stat-row" style="justify-content: center;">
+      <div class="stat"><div class="number">85%</div><div class="label">Internet penetration</div></div>
+      <div class="stat"><div class="number">80%</div><div class="label">Smartphone usage</div></div>
+      <div class="stat"><div class="number">~40%</div><div class="label">Bank account holders</div></div>
+      <div class="stat"><div class="number">21</div><div class="label">Digital payments/person/year</div></div>
+      <div class="stat"><div class="number">500+</div><div class="label">EU average payments/year</div></div>
+    </div>
+    <div class="two-col" style="margin-top: 32px;">
+      <div>
+        <h3 style="color: var(--green);">Strengths</h3>
+        <ul>
+          <li>Fiskalizimi (universal receipt verification)</li>
+          <li>e-Albania (centralized digital identity)</li>
+          <li>SEPA membership (cross-border Euro payments)</li>
+          <li>Government actively pushing cashless</li>
+          <li>Small market = faster adoption cycles</li>
+          <li>No entrenched loyalty platform competitors</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color: var(--red);">Challenges</h3>
+        <ul>
+          <li>Only 34% trust banks</li>
+          <li>Deep cash culture (especially rural)</li>
+          <li>60% of adults don't use digital payments</li>
+          <li>Small fintech talent pool</li>
+          <li>Cybersecurity concerns</li>
+          <li>~50% financial literacy rate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: What We Learned from History - Payback -->
+  <div class="slide" data-slide="4">
+    <h2>Payback: Our Primary Model</h2>
+    <p class="subtitle">Germany, 1998. Three employees. Zero venture capital. Now worth EUR 500M.</p>
+    <div class="two-col">
+      <div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="year">1998</div>
+            <div class="event">Founded by Alexander Rittweger with 3 employees. No VC. Pre-recruited 9 launch partners.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="year">2000</div>
+            <div class="event">Launched. 1 million customers in the first month.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="year">2005</div>
+            <div class="event">Palamon PE buyout. Scaled to millions of users.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="year">2011</div>
+            <div class="event">Sold to American Express for EUR 500M.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="year">2025</div>
+            <div class="event">Still thriving. 35M active users. 700+ partners. 60% of German households.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>The Three Rules That Made It Work</h3>
+          <ul>
+            <li><strong>Category exclusivity</strong> &mdash; Only one supermarket, one gas station, one electronics retailer. "You're THE electronics partner" is flattering and FOMO-inducing.</li>
+            <li><strong>No data sharing between partners</strong> &mdash; The platform sees everything, but Conad never sees what customers buy at Neptun. This is what made competing companies comfortable joining.</li>
+            <li><strong>Prestige recruitment</strong> &mdash; Only approached the biggest company in each category. Quality over quantity.</li>
+          </ul>
+        </div>
+        <div class="success-box" style="margin-top: 16px;">
+          <h3>Why This Applies to Albania</h3>
+          <p>Albania has 2-3 major players per category. Category exclusivity is achievable. Companies share costs. And the fiskalizimi system provides free receipt verification that Payback never had.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Stocard - The Launch Hack -->
+  <div class="slide" data-slide="5">
+    <h2>Stocard: The Cold-Start Hack</h2>
+    <p class="subtitle">70 million users. $31M funding. No merchant permission needed.</p>
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <h3>How It Bypassed Chicken-and-Egg</h3>
+          <p>Three university students built an app that digitized existing physical loyalty cards. Users scanned their Conad card, Neptun card, BKT card into the app. <strong>No merchant partnership required.</strong></p>
+          <br>
+          <p>The app was useful from day one because it replaced the stack of cards in your wallet. Merchants didn't need to know it existed.</p>
+        </div>
+        <div class="stat-row" style="margin-top: 24px;">
+          <div class="stat"><div class="number">70M</div><div class="label">Users</div></div>
+          <div class="stat"><div class="number">$31M</div><div class="label">Total funding</div></div>
+          <div class="stat"><div class="number">~120M</div><div class="label">EUR exit (Klarna)</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-color: var(--accent);">
+          <h3>Our Launch Strategy</h3>
+          <p>Combine Stocard's approach with Payback's model:</p>
+          <br>
+          <div class="flow-box">
+<span class="highlight">Step 1:</span> Digitize existing Albanian loyalty cards
+         <span class="dim">(no permission needed)</span>
+
+<span class="highlight">Step 2:</span> Add fiskalizimi receipt scanning
+         <span class="dim">(track purchases automatically)</span>
+
+<span class="highlight">Step 3:</span> Build user base to 5,000+
+
+<span class="highlight">Step 4:</span> Approach companies with data:
+         <span class="green">"X thousand of YOUR customers</span>
+         <span class="green"> already use our app"</span>
+
+<span class="highlight">Step 5:</span> Convert to Payback model
+         <span class="dim">(exclusive partnerships, fees)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Other Precedents -->
+  <div class="slide" data-slide="6">
+    <h2>Lessons From Others</h2>
+    <p class="subtitle">What worked, what failed, and what almost killed them.</p>
+    <div class="three-col">
+      <div class="card">
+        <span class="tag tag-green">Success</span>
+        <h3>ShopBack</h3>
+        <p><strong>Southeast Asia, 2014</strong></p>
+        <p>Pure cashback, grew to 55M users across 13 markets. $332M raised. IPO planned.</p>
+        <br>
+        <div class="warning-box" style="padding: 12px 16px;">
+          <p style="font-size: 14px;"><strong>Almost died:</strong> Tried BNPL payments in 2021. Lost money fast. Fired 24% of staff. CEO apologized publicly. Survived by going back to basics.</p>
+        </div>
+        <br>
+        <p class="dim" style="font-size: 14px;">Lesson: Don't try to become a fintech too early.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green">Success</span>
+        <h3>Ibotta</h3>
+        <p><strong>US, 2011. IPO'd 2024 at $2.7B</strong></p>
+        <p>Receipt scanning cashback. Pay-per-sale model eliminated risk for brands.</p>
+        <br>
+        <p>Key pivot in 2017: stopped being a consumer app, became <strong>B2B marketing infrastructure</strong>. That's what made them worth billions.</p>
+        <br>
+        <p class="dim" style="font-size: 14px;">Lesson: The consumer app is the entry point. The B2B platform is the real business.</p>
+      </div>
+      <div class="card">
+        <span class="tag tag-red">Warning</span>
+        <h3>Nectar (UK)</h3>
+        <p><strong>UK, 2002. Coalition loyalty program.</strong></p>
+        <p>Launched with half of UK households. Peaked at 16.8M members.</p>
+        <br>
+        <div class="warning-box" style="padding: 12px 16px;">
+          <p style="font-size: 14px;"><strong>What killed it:</strong> Partners left. As loyalty tech got cheaper, companies ran their own programs. Value collapsed from GBP 368M to GBP 60M. <strong>84% destruction.</strong></p>
+        </div>
+        <br>
+        <p class="dim" style="font-size: 14px;">Lesson: Lock in long-term exclusive contracts from day one.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: China Reference -->
+  <div class="slide" data-slide="7">
+    <h2>China: The Endgame Reference</h2>
+    <p class="subtitle">How a billion people stopped using cash. And what Albania can learn.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="color: var(--text);">What Actually Happened</h3>
+        <ul>
+          <li><strong>Alipay (2003):</strong> Started as escrow for Taobao. Solved trust in online shopping. Payments came later.</li>
+          <li><strong>WeChat Pay (2013):</strong> Embedded in a messaging app 600M people already used. Payments were a feature, not the product.</li>
+          <li><strong>QR codes:</strong> Free for merchants (just print a paper). No expensive POS terminals needed. 100M+ small businesses adopted instantly.</li>
+          <li><strong>Digital Yuan (2020+):</strong> Government CBDC. Mostly irrelevant to why China is cashless. The revolution was commercial, not governmental.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card" style="border-color: var(--accent);">
+          <h3>The Pattern</h3>
+          <div class="flow-box">
+<span class="highlight">1.</span> Solve a real pain point first
+   <span class="dim">(trust, convenience, cost)</span>
+
+<span class="highlight">2.</span> Make merchant adoption free
+   <span class="dim">(QR codes = zero hardware cost)</span>
+
+<span class="highlight">3.</span> Build on something people already use
+   <span class="dim">(don't start with "download our payment app")</span>
+
+<span class="highlight">4.</span> Find a viral adoption moment
+   <span class="dim">(WeChat: Red Envelope during New Year)</span>
+
+<span class="highlight">5.</span> Then add payments
+   <span class="dim">(only after millions of daily users)</span>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <h3>Albania's Equivalent</h3>
+          <p>Fiskalizimi QR codes are already on every receipt. e-Albania provides digital identity. The infrastructure exists. What's missing is the consumer-facing app that makes it all useful.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Business Model -->
+  <div class="slide" data-slide="8">
+    <h2>Business Model</h2>
+    <p class="subtitle">Outsourced loyalty infrastructure for Albanian businesses.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="color: var(--text);">What We Sell to Companies</h3>
+        <div class="card" style="margin-top: 12px;">
+          <h3>Loyalty-as-a-Service</h3>
+          <p>Companies don't need their own apps, loyalty cards, or tech. They join our platform and configure their offers through a simple dashboard.</p>
+          <br>
+          <ul>
+            <li>Cheaper than building their own system</li>
+            <li>Cross-sector earning makes their program more attractive</li>
+            <li>Data insights they can't get alone</li>
+            <li>Category exclusivity = prestige positioning</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <h3>Revenue: Per-Redemption Fee</h3>
+          <div class="flow-box">
+Customer returns to store     <span class="green">+200 LEK revenue</span>
+Platform fee                  <span class="orange">-30 LEK</span>
+Discount given to customer    <span class="orange">-20 LEK</span>
+<span class="highlight">Net gain for merchant          +150 LEK</span>
+
+Merchant pays only when they
+get a returning customer.
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="color: var(--text);">What Users Get</h3>
+        <div class="card" style="margin-top: 12px;">
+          <h3>One App, All Rewards</h3>
+          <p>Replace every loyalty card, punch card, and points system with one app. Scan any receipt from any partner. Never miss a reward.</p>
+        </div>
+        <h3 style="color: var(--text); margin-top: 24px;">Merchant Fee Collection</h3>
+        <div class="card" style="margin-top: 12px;">
+          <h3>Prepaid Balance Model</h3>
+          <div class="flow-box">
+Merchant deposits <span class="green">10,000 LEK</span> upfront
+
+Each redemption: <span class="orange">-30 LEK</span> auto-deducted
+
+Balance low? <span class="orange">Email alert</span>
+Balance zero? <span class="red">Offers paused</span>
+
+Monthly fiscalized invoice auto-generated.
+No chasing payments. Ever.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: How It Works - Flow -->
+  <div class="slide" data-slide="9">
+    <h2>How It Works</h2>
+    <p class="subtitle">The complete user and merchant flow.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="color: var(--text);">Customer Journey</h3>
+        <div class="flow-box" style="font-size: 14px;">
+<span class="highlight">FIRST VISIT (no app yet)</span>
+Customer pays at register
+Sees counter card: "Scan for 10% off next time"
+Downloads app via QR on counter card
+
+<span class="highlight">FIRST SCAN</span>
+Opens app &rarr; Camera activates
+Scans receipt QR code
+<span class="green">1-2 seconds: fiskalizimi verifies</span>
+Sees: "10% off next visit, valid 7 days"
+No signup needed for first scan
+
+<span class="highlight">RETURN VISIT (the habit-forming moment)</span>
+Opens app &rarr; "My Rewards"
+Shows 6-character code to cashier
+<span class="green">Gets 10% off</span>
+Saves 20 LEK by doing almost nothing
+Now scans every receipt from every partner
+
+<span class="highlight">DAY 5 NOTIFICATION</span>
+"Your 10% off at Cafe X expires in 2 days"
+<span class="dim">(Worth more than any ad the cafe could buy)</span>
+        </div>
+      </div>
+      <div>
+        <h3 style="color: var(--text);">Merchant Side</h3>
+        <div class="flow-box" style="font-size: 14px;">
+<span class="highlight">ONBOARDING (one-time, 10 minutes)</span>
+Sign up on web dashboard
+Set offer: "10% off, max 500 LEK, 7-day expiry"
+Receive: counter card + window sticker
+Bookmark: merchant verification page
+
+<span class="highlight">DAILY OPERATION</span>
+Staff says one sentence when giving receipt:
+"Scan for 10% off next time"
+That's it. No training needed.
+
+<span class="highlight">WHEN CUSTOMER REDEEMS</span>
+Customer shows code on phone
+Cashier types 6 chars into bookmarked page
+<span class="green">Page shows: "Valid - 10% off, max 500 LEK"</span>
+Cashier applies discount manually
+No special hardware. No app install.
+
+<span class="highlight">DASHBOARD (monthly review)</span>
+Receipts scanned: 847
+Return visits triggered: 89
+Net gain: ~13,350 LEK
+<span class="dim">(This dashboard sells the next 100 merchants)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: The Pitch to Companies -->
+  <div class="slide" data-slide="10">
+    <h2>The Pitch to Companies</h2>
+    <p class="subtitle">Why would Neptun, Conad, or BKT join instead of doing their own thing?</p>
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <h3>The Four Arguments</h3>
+          <ul>
+            <li><strong>Cost:</strong> Building a loyalty app costs EUR 50-100K+/year per company. Sharing one platform = fraction of the cost.</li>
+            <li><strong>Cross-sector earning:</strong> "Earn at Conad, use at Neptun." No single company can offer this alone. Makes the loyalty program more attractive to consumers.</li>
+            <li><strong>Data insights:</strong> Learn that your customers also shop at competitor X for certain products. Anonymized, never shared raw.</li>
+            <li><strong>Exclusivity / FOMO:</strong> "If you don't join, your competitor will be THE supermarket on the platform your customers already use."</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-color: var(--green);">
+          <h3 style="color: var(--green);">The Walk-In Pitch</h3>
+          <p style="font-style: italic; color: var(--text-dim); line-height: 1.8;">"How many of your customers come back within a week? Maybe 30%?</p>
+          <p style="font-style: italic; color: var(--text-dim); line-height: 1.8;">We make them come back by giving them a reason &mdash; a discount on their next visit, automatically, through the fiscal receipt you already hand them.</p>
+          <p style="font-style: italic; color: var(--text-dim); line-height: 1.8;">You don't need anything new &mdash; no hardware, no training. Just a card on your counter and one sentence from your staff.</p>
+          <p style="font-style: italic; color: var(--text); line-height: 1.8; font-weight: 600;">3 months free. If it doesn't work, remove the card."</p>
+        </div>
+        <div class="warning-box" style="margin-top: 16px;">
+          <h3>Critical: Long-Term Contracts</h3>
+          <p>Nectar died because partners left. From the start: 3 months free, then 3-year exclusive commitment. The exclusivity IS the value &mdash; protect it contractually.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Roadmap -->
+  <div class="slide" data-slide="11">
+    <h2>Roadmap</h2>
+    <p class="subtitle">Four phases. From validation to vision.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Timeline</th>
+            <th>Capital</th>
+            <th>What We Do</th>
+            <th>Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-purple">0: Validate</span></td>
+            <td>Months 1-2</td>
+            <td>EUR 0</td>
+            <td>Talk to 5-10 companies. Test fiskalizimi API. Research existing loyalty cards.</td>
+            <td>Go / No-go decision</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">1: Stocard Hack</span></td>
+            <td>Months 2-6</td>
+            <td>EUR 5-15K</td>
+            <td>Digitize existing loyalty cards. Add receipt scanning. Build user base without merchant permission.</td>
+            <td>5,000 users</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-green">2: Payback Model</span></td>
+            <td>Months 6-12</td>
+            <td>EUR 5-15K</td>
+            <td>Approach companies with user data. Exclusive partnerships. Per-redemption fees.</td>
+            <td>20,000 users, 30 merchants</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-orange">3: Real Money</span></td>
+            <td>Months 12-24</td>
+            <td>EUR 50-100K</td>
+            <td>Partner with EasyPay/Paysera. Add withdrawals. Real cashback.</td>
+            <td>50,000+ users</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-red">4: Payments</span></td>
+            <td>Year 2+</td>
+            <td>EUR 500K+</td>
+            <td>Add payment capability. The Albanian Alipay vision. External investment needed.</td>
+            <td>The PM pitch</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col" style="margin-top: 24px;">
+      <div class="success-box">
+        <h3>Phase 0 is non-negotiable</h3>
+        <p>If companies say no &rarr; stop. If fiskalizimi API doesn't work &rarr; find alternative. Don't write code before validation.</p>
+      </div>
+      <div class="card">
+        <h3>Phase 4 is earned, not planned</h3>
+        <p>The payment vision only makes sense with 50K+ users and proven merchant relationships. Build first, pitch the PM later &mdash; with real data.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Key Ecosystem Players -->
+  <div class="slide" data-slide="12">
+    <h2>Key Players in Albania</h2>
+    <p class="subtitle">Who to partner with, who to watch, who to avoid.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Entity</th>
+            <th>What They Are</th>
+            <th>Relevance to Us</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>EasyPay</strong></td>
+            <td>First open banking licensee. EMI since 2010.</td>
+            <td><span class="tag tag-green">Key partner</span> for Phase 3 money movement. Already has the license we'd need.</td>
+          </tr>
+          <tr>
+            <td><strong>Paysera Albania</strong></td>
+            <td>EMI licensed since 2021. "Fintech of the Year."</td>
+            <td><span class="tag tag-blue">Alternative partner</span> if EasyPay doesn't work out.</td>
+          </tr>
+          <tr>
+            <td><strong>Bank of Albania</strong></td>
+            <td>Regulator. Licenses EMI/PI under Law 55/2020.</td>
+            <td><span class="tag tag-purple">Regulator</span> &mdash; understand their requirements before Phase 3.</td>
+          </tr>
+          <tr>
+            <td><strong>tatime.gov.al</strong></td>
+            <td>Tax authority. Runs fiskalizimi.</td>
+            <td><span class="tag tag-green">Infrastructure</span> &mdash; receipt verification backbone.</td>
+          </tr>
+          <tr>
+            <td><strong>fature.al</strong></td>
+            <td>Third-party fiscalization API provider.</td>
+            <td><span class="tag tag-blue">Technical integration</span> point. Has documented REST API.</td>
+          </tr>
+          <tr>
+            <td><strong>e-Albania</strong></td>
+            <td>National digital identity platform.</td>
+            <td><span class="tag tag-orange">Future KYC</span> integration for Phase 3-4.</td>
+          </tr>
+          <tr>
+            <td><strong>PayLink</strong></td>
+            <td>National card payment/clearing operator.</td>
+            <td><span class="tag tag-purple">Infrastructure</span> layer. Certified by Visa, MasterCard, AmEx.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Risks -->
+  <div class="slide" data-slide="13">
+    <h2>Risks &amp; Mitigations</h2>
+    <p class="subtitle">What could kill this, and how to prevent it.</p>
+    <div class="two-col">
+      <div>
+        <div class="warning-box">
+          <h3>Companies refuse to join</h3>
+          <p>Validate in Phase 0. If 8 out of 10 say no, reconsider or pivot. Don't build first.</p>
+        </div>
+        <div class="warning-box">
+          <h3>Anchor partner leaves (Nectar problem)</h3>
+          <p>Long-term exclusive contracts (3+ years) from day one. Make switching costs high. Build dependency.</p>
+        </div>
+        <div class="warning-box">
+          <h3>Someone copies with more connections</h3>
+          <p>Move fast. Build traction before talking to politicians. First-mover advantage matters in a small market.</p>
+        </div>
+      </div>
+      <div>
+        <div class="warning-box">
+          <h3>Receipt fraud (scanning others' receipts)</h3>
+          <p>First-claim-only per NIVF. For loyalty rewards (not real money), the risk is low. Tighten in later phases.</p>
+        </div>
+        <div class="warning-box">
+          <h3>Fiskalizimi API access issues</h3>
+          <p>Use fature.al third-party API. Or parse QR code data directly (contains a tatime.gov.al verification URL).</p>
+        </div>
+        <div class="warning-box">
+          <h3>Market too small</h3>
+          <p>Focus on Tirana first (~800K people). Prove unit economics. Expand to other cities only when Tirana works.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Immediate Next Steps -->
+  <div class="slide" data-slide="14">
+    <h2>Immediate Next Steps</h2>
+    <p class="subtitle">What we do this week and this month.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="color: var(--text);">This Week</h3>
+        <div class="card" style="margin-top: 12px;">
+          <ul>
+            <li><strong>Get 5 fiscal receipts</strong> from different businesses. Scan the QR codes. See what data comes back from tatime.gov.al.</li>
+            <li><strong>Test fature.al API</strong> &mdash; sign up, read docs, try to verify a receipt programmatically.</li>
+            <li><strong>List all Albanian loyalty programs</strong> &mdash; what cards do Neptun, Conad, BKT, and others currently offer?</li>
+            <li><strong>Research EasyPay</strong> &mdash; understand their services, API, and whether a partnership conversation makes sense.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3 style="color: var(--text);">This Month</h3>
+        <div class="card" style="margin-top: 12px;">
+          <ul>
+            <li><strong>Talk to 5 business owners</strong> &mdash; not a sales pitch. Just: "Would you be interested in this? What would make you say yes?"</li>
+            <li><strong>Register the business entity</strong> &mdash; needed for fiskalizimi integration and future merchant contracts.</li>
+            <li><strong>Define MVP feature set</strong> based on validation findings.</li>
+            <li><strong>Decide roles</strong> &mdash; who sells to merchants? Who handles operations? Who builds the product?</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top: 16px; border-color: var(--accent);">
+          <h3>The Make-or-Break Question</h3>
+          <p>Will at least 3 out of 5 companies say "yes, I'd try this"? Everything else is engineering. <strong>This is a sales question.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>&larr; Previous</button>
+  <span class="slide-counter" id="counter">1 / 15</span>
+  <button id="nextBtn" onclick="navigate(1)">Next &rarr;</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const bar = document.getElementById('progressBar');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(index) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[index].classList.add('active');
+    bar.style.width = ((index + 1) / total * 100) + '%';
+    counter.textContent = (index + 1) + ' / ' + total;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === total - 1;
+  }
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) { current = next; show(current); }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { navigate(diff > 0 ? 1 : -1); }
+  });
+
+  show(0);
+</script>
+
+</body>
+</html>
