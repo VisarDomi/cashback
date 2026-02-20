@@ -19,6 +19,33 @@
 
 	let state = $state<State>('home');
 	let receipt = $state<ReceiptData | null>(null);
+	let redeemCode = $state('');
+	let qrDataUrl = $state('');
+
+	function generateCode(iic: string): string {
+		let hash = 0;
+		for (let i = 0; i < iic.length; i++) {
+			hash = ((hash << 5) - hash + iic.charCodeAt(i)) | 0;
+		}
+		const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+		let code = '';
+		let h = Math.abs(hash);
+		for (let i = 0; i < 6; i++) {
+			code += chars[h % chars.length];
+			h = Math.floor(h / chars.length) || (h + 7);
+		}
+		return code;
+	}
+
+	async function generateQr(code: string) {
+		const QRCode = (await import('qrcode')).default;
+		const url = `https://cashback.veron3.space/verify?code=${code}`;
+		qrDataUrl = await QRCode.toDataURL(url, {
+			width: 240,
+			margin: 2,
+			color: { dark: '#e8e8f0', light: '#00000000' }
+		});
+	}
 	let manualInput = $state('');
 	let manualError = $state('');
 	let cameraError = $state('');
@@ -58,6 +85,8 @@
 
 	function showResult(data: ReceiptData) {
 		receipt = data;
+		redeemCode = generateCode(data.iic);
+		generateQr(redeemCode);
 		state = 'result';
 		stopScanner();
 	}
@@ -254,6 +283,13 @@
 				<h3>Shpërblimi yt</h3>
 				<p class="reward-amount">10% zbritje herën tjetër</p>
 				<p class="reward-expiry">Vlefshmëri: 7 ditë</p>
+				<div class="code-display">
+					{#if qrDataUrl}
+						<img src={qrDataUrl} alt="QR code" class="qr-img" />
+					{/if}
+					<span class="code">{redeemCode}</span>
+					<span class="code-hint">Kasieri skanon këtë kod</span>
+				</div>
 			</div>
 
 			<div class="actions">
@@ -561,6 +597,35 @@
 
 	.reward-expiry {
 		font-size: 13px;
+		color: var(--text-dim);
+	}
+
+	.code-display {
+		margin-top: 16px;
+		padding-top: 16px;
+		border-top: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.qr-img {
+		width: 180px;
+		height: 180px;
+		image-rendering: pixelated;
+	}
+
+	.code {
+		font-family: 'SF Mono', 'Fira Code', monospace;
+		font-size: 18px;
+		font-weight: 700;
+		letter-spacing: 4px;
+		color: var(--text-dim);
+	}
+
+	.code-hint {
+		font-size: 12px;
 		color: var(--text-dim);
 	}
 
