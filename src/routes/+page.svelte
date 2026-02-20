@@ -253,7 +253,7 @@
 	.app {
 		max-width: 420px;
 		margin: 0 auto;
-		padding: 24px 20px;
+		padding: calc(24px + env(safe-area-inset-top)) 20px 24px;
 		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
