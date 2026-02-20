@@ -39,11 +39,13 @@
   }
 
   .doc-list {
+    position: absolute;
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 32px;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .doc-list a {
@@ -55,7 +57,7 @@
     border-radius: 6px;
     border: 1px solid var(--border);
     transition: all 0.15s;
-    display: inline-block;
+    display: block;
   }
 
   .doc-list a:hover {
@@ -430,9 +432,9 @@
           <div class="stat"><div class="number">85%</div><div class="label">Internet Penetration</div></div>
           <div class="stat"><div class="number">2030</div><div class="label">Cashless Goal</div></div>
         </div>
-        <!-- DOCS_LIST -->
       </div>
     </div>
+    <!-- DOCS_LIST -->
   </div>
 
   <!-- SLIDE 2: The Two Visions -->
