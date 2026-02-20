@@ -32,10 +32,60 @@
     height: 100vh;
   }
 
+  /* Navbar */
+  .top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    gap: 8px;
+  }
+
+  .top-nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .top-nav a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .top-nav a.active { color: var(--accent-light); background: rgba(99,102,241,0.12); }
+
+  .top-nav .brand {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent-light);
+    margin-right: 12px;
+    padding: 0;
+  }
+
+  .top-nav .brand:hover { background: none; }
+
+  .top-nav .divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 6px;
+    flex-shrink: 0;
+  }
+
   .deck {
     height: 100vh;
     width: 100vw;
     position: relative;
+    padding-top: 44px;
   }
 
   .slide {
@@ -384,7 +434,18 @@
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
+<nav class="top-nav">
+  <a href="/" class="brand">cashback</a>
+  <div class="divider"></div>
+  <a href="/" class="active">Slideshow</a>
+  <a href="/viewer.html?file=condense.md">Brainstorm</a>
+  <a href="/viewer.html?file=platform-research.md">Research</a>
+  <a href="/viewer.html?file=feedback.md">Feedback</a>
+  <a href="/viewer.html?file=temp.md">Notes</a>
+  <a href="/viewer.html">All Docs</a>
+</nav>
+
+<div class="progress-bar" id="progressBar" style="top:44px"></div>
 
 <div class="deck" id="deck">
 

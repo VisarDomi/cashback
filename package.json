@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "mkdir -p dist && cp slideshow.html dist/index.html && cp -r docs dist/docs 2>/dev/null || true"
+    "build": "mkdir -p dist/docs && cp slideshow.html dist/index.html && cp viewer.html dist/viewer.html && cp docs/*.md dist/docs/"
   }
 }
