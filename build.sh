@@ -4,12 +4,24 @@ set -euo pipefail
 rm -rf dist
 mkdir -p dist
 
-# Copy slideshow as index
-cp slideshow.html dist/index.html
-
-# For each .md file, generate a standalone HTML page with inline markdown rendering
+# --- Generate doc list HTML from docs/*.md ---
+doc_links=""
 for md_file in docs/*.md; do
   name=$(basename "$md_file" .md)
+  # Convert filename to display name: "platform-research" → "Platform Research"
+  display=$(echo "$name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+  doc_links="${doc_links}<a href=\"/${name}\">${display}</a>"
+done
+doc_list_html="<div class=\"doc-list\">${doc_links}</div>"
+
+# --- Build slideshow (index.html) with injected doc list ---
+sed "s|<!-- DOCS_LIST -->|${doc_list_html}|" slideshow.html > dist/index.html
+echo "Built index.html (slideshow with $(echo docs/*.md | wc -w) doc links)"
+
+# --- Build each .md as a standalone HTML page ---
+for md_file in docs/*.md; do
+  name=$(basename "$md_file" .md)
+  display=$(echo "$name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
   content=$(cat "$md_file")
 
   cat > "dist/${name}.html" << 'TEMPLATE_START'
@@ -18,21 +30,16 @@ for md_file in docs/*.md; do
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TITLE_PLACEHOLDER — Cashback Platform</title>
+<title>TITLE_PLACEHOLDER</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
   :root{--bg:#0a0a0f;--surface:#12121a;--border:#2a2a3a;--text:#e0e0ec;--text-dim:#8888a0;--accent:#6366f1;--accent-light:#818cf8;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6}
   body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;height:52px;gap:8px;overflow-x:auto}
-  nav a{color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;white-space:nowrap;transition:all .15s}
-  nav a:hover{color:var(--text);background:rgba(255,255,255,.06)}
-  nav a.active{color:var(--accent-light);background:rgba(99,102,241,.12)}
-  nav .brand{font-weight:700;font-size:14px;color:var(--accent-light);margin-right:16px;padding:0}
-  nav .brand:hover{background:none}
-  nav .divider{width:1px;height:24px;background:var(--border);margin:0 8px;flex-shrink:0}
-  .content{max-width:860px;margin:0 auto;padding:48px 32px 120px}
+  .back{display:inline-block;margin:24px 32px;color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;border:1px solid var(--border);transition:all .15s}
+  .back:hover{color:var(--accent-light);border-color:var(--accent);background:rgba(99,102,241,.08)}
+  .content{max-width:860px;margin:0 auto;padding:0 32px 120px}
   .markdown h1{font-size:36px;font-weight:800;letter-spacing:-1px;margin:48px 0 16px;color:#f0f0fa;border-bottom:1px solid var(--border);padding-bottom:12px}
   .markdown h1:first-child{margin-top:0}
   .markdown h2{font-size:26px;font-weight:700;letter-spacing:-.5px;margin:40px 0 12px;color:#e0e0f0}
@@ -59,22 +66,14 @@ for md_file in docs/*.md; do
 </style>
 </head>
 <body>
-<nav>
-  <a href="/" class="brand">cashback</a>
-  <div class="divider"></div>
-  <a href="/">Slideshow</a>
-  <a href="/condense" id="link-condense">Brainstorm</a>
-  <a href="/platform-research" id="link-platform-research">Research</a>
-  <a href="/feedback" id="link-feedback">Feedback</a>
-  <a href="/temp" id="link-temp">Notes</a>
-</nav>
+<a href="/" class="back">&larr; Back to slideshow</a>
 <div class="content">
   <div id="output" class="markdown"></div>
 </div>
 <script id="md-source" type="text/markdown">
 TEMPLATE_START
 
-  # Escape the content for safe embedding (close script tags, etc.)
+  # Escape content for safe embedding
   escaped_content=$(echo "$content" | sed 's|</script>|<\\/script>|g')
   echo "$escaped_content" >> "dist/${name}.html"
 
@@ -83,18 +82,14 @@ TEMPLATE_START
 <script>
   var md = document.getElementById('md-source').textContent;
   document.getElementById('output').innerHTML = marked.parse(md);
-  var activeLink = document.getElementById('link-${name}');
-  if (activeLink) activeLink.classList.add('active');
 </script>
 </body>
 </html>
 TEMPLATE_END
 
   # Fix the title
-  title=$(echo "$name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-  sed -i "s/TITLE_PLACEHOLDER/${title}/" "dist/${name}.html"
-
+  sed -i "s/TITLE_PLACEHOLDER/${display}/" "dist/${name}.html"
   echo "Built ${name}.html"
 done
 
-echo "Build complete: $(ls dist/)"
+echo "Done: $(ls dist/)"
