@@ -39,7 +39,7 @@
 
 	async function generateQr(code: string) {
 		const QRCode = (await import('qrcode')).default;
-		const url = `https://cashback.veron3.space/verify?code=${code}`;
+		const url = `https://cashback-biz.veron3.space/?code=${code}`;
 		qrDataUrl = await QRCode.toDataURL(url, {
 			width: 240,
 			margin: 2,
