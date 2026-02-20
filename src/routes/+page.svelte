@@ -41,9 +41,9 @@
 		const QRCode = (await import('qrcode')).default;
 		const url = `https://cashback-biz.veron3.space/?code=${code}`;
 		qrDataUrl = await QRCode.toDataURL(url, {
-			width: 240,
+			width: 480,
 			margin: 2,
-			color: { dark: '#e8e8f0', light: '#00000000' }
+			color: { dark: '#000000', light: '#ffffff' }
 		});
 	}
 	let manualInput = $state('');
@@ -611,9 +611,9 @@
 	}
 
 	.qr-img {
-		width: 180px;
-		height: 180px;
-		image-rendering: pixelated;
+		width: 220px;
+		height: 220px;
+		border-radius: 12px;
 	}
 
 	.code {
