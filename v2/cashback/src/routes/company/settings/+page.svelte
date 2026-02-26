@@ -11,8 +11,9 @@
 	function refresh() {
 		const cid = getAccountId();
 		if (!cid) return;
-		company = bank.getCompany(cid);
-		if (company) cashbackPercent = company.cashbackPercent;
+		const c = bank.getCompany(cid);
+		company = c;
+		if (c) cashbackPercent = c.cashbackPercent;
 	}
 
 	$effect(() => { refresh(); });
