@@ -63,6 +63,19 @@
 		processScannedReceipt(getSample());
 	}
 
+	function tryDuplicate() {
+		const userId = getAccountId();
+		if (!userId) return;
+		const existing = bank.getReceiptsByUser(userId);
+		if (existing.length === 0) {
+			// No receipts yet — process one first, then replay it
+			trySample();
+			return;
+		}
+		const r = existing[0];
+		processScannedReceipt({ iic: r.iic, tin: r.tin, crtd: r.receiptDate, prc: String(r.totalAmount) });
+	}
+
 	function goManual() {
 		view = 'manual';
 		manualError = '';
@@ -151,6 +164,7 @@
 
 		<div class="actions">
 			<button class="btn-primary" onclick={trySample}>Provo me shembull</button>
+			<button class="btn-secondary" onclick={tryDuplicate}>Provo me faturë të skanuar njëherë</button>
 			<button class="link-btn" onclick={goManual}>Shkruaj NIVF manualisht</button>
 		</div>
 
@@ -456,6 +470,22 @@
 	}
 
 	.btn-primary:hover { background: var(--accent-light); }
+
+	.btn-secondary {
+		width: 100%;
+		padding: 14px;
+		background: var(--surface);
+		color: var(--text);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		font-size: 14px;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition: border-color 0.15s;
+	}
+
+	.btn-secondary:hover { border-color: var(--accent); }
 	.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
 	.link-btn {
