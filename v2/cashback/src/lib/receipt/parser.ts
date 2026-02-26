@@ -5,12 +5,27 @@ export interface ReceiptData {
 	prc: string;
 }
 
-const SAMPLE: ReceiptData = {
-	iic: '9A5D3E8F2B1C7040',
-	tin: 'L62203504M',
-	crtd: '2026-02-26T14:30:00',
-	prc: '850.00',
-};
+const SAMPLE_PRICES = [350, 480, 650, 850, 1200, 1500, 1800, 2400, 3200, 4500];
+
+function randomHex(len: number): string {
+	const chars = '0123456789ABCDEF';
+	let s = '';
+	for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * 16)];
+	return s;
+}
+
+function randomSample(): ReceiptData {
+	const now = new Date();
+	// Random time in the last 2 hours
+	const offset = Math.floor(Math.random() * 7200_000);
+	const d = new Date(now.getTime() - offset);
+	return {
+		iic: randomHex(16),
+		tin: 'L62203504M',
+		crtd: d.toISOString().slice(0, 19),
+		prc: String(SAMPLE_PRICES[Math.floor(Math.random() * SAMPLE_PRICES.length)]),
+	};
+}
 
 export function parseFiskalizimiUrl(raw: string): ReceiptData | null {
 	try {
@@ -31,7 +46,7 @@ export function parseFiskalizimiUrl(raw: string): ReceiptData | null {
 		}
 
 		if (/^[A-Za-z0-9-]{8,}$/.test(trimmed)) {
-			return { ...SAMPLE, iic: trimmed };
+			return { ...randomSample(), iic: trimmed };
 		}
 
 		return null;
@@ -41,5 +56,5 @@ export function parseFiskalizimiUrl(raw: string): ReceiptData | null {
 }
 
 export function getSample(): ReceiptData {
-	return { ...SAMPLE };
+	return randomSample();
 }
