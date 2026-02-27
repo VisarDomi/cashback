@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { BankAPI, BankAccount, Transaction, Receipt, Company, User } from '../bank-api/types.ts';
-import { SEED_ACCOUNTS, SEED_TRANSACTIONS, SEED_RECEIPTS, SEED_COMPANY, SEED_USER } from '../bank-api/seed.ts';
+import { SEED_ACCOUNTS, SEED_TRANSACTIONS, SEED_RECEIPTS, SEED_COMPANY, SEED_COMPANY_2, SEED_USER } from '../bank-api/seed.ts';
 const DATA_PATH = process.env.DATA_PATH || './data/bank.json';
 
 interface BankState {
@@ -27,7 +27,7 @@ function seed(): BankState {
 		accounts: structuredClone(SEED_ACCOUNTS),
 		transactions: structuredClone(SEED_TRANSACTIONS),
 		receipts: structuredClone(SEED_RECEIPTS),
-		companies: [structuredClone(SEED_COMPANY)],
+		companies: [structuredClone(SEED_COMPANY), structuredClone(SEED_COMPANY_2)],
 		users: [structuredClone(SEED_USER)],
 		nextId: 100,
 	};
@@ -58,6 +58,25 @@ export function resetBank() {
 	} catch {
 		// file may not exist
 	}
+}
+
+export function addCompany(tin: string, name: string, cashbackPercent: number, logoEmoji: string): Company {
+	const s = load();
+	const id = genId(s, 'comp');
+	const company: Company = { id, name, tin, cashbackPercent, logoEmoji };
+	s.companies.push(company);
+	// Create escrow account with 50,000 LEK demo balance
+	const escrowId = genId(s, 'acc_escrow');
+	s.accounts.push({
+		id: escrowId,
+		ownerId: id,
+		type: 'company_escrow',
+		balance: 50_000,
+		currency: 'ALL',
+		createdAt: now(),
+	});
+	save(s);
+	return company;
 }
 
 export function updateCashbackPercent(companyId: string, percent: number) {

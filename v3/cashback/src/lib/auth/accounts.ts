@@ -1,4 +1,4 @@
-export type Role = 'user' | 'company';
+export type Role = 'user' | 'company' | 'admin';
 
 export interface DemoAccount {
 	id: string;
@@ -22,5 +22,12 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
 		name: 'Cafe Tirana',
 		subtitle: 'NIPT: L62203504M',
 		emoji: '☕',
+	},
+	{
+		id: 'admin_1',
+		role: 'admin',
+		name: 'Bank Admin',
+		subtitle: 'Administrata e bankës',
+		emoji: '🏦',
 	},
 ];

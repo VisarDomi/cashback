@@ -2,9 +2,15 @@ import { redirect } from '@sveltejs/kit';
 import { DEMO_ACCOUNTS } from '$lib/auth/accounts.ts';
 import type { Actions, PageServerLoad } from './$types';
 
+function dashboardFor(role: string): string {
+	if (role === 'company') return '/company';
+	if (role === 'admin') return '/admin';
+	return '/user';
+}
+
 export const load: PageServerLoad = ({ locals }) => {
 	if (locals.accountId && locals.role) {
-		redirect(303, locals.role === 'company' ? '/company' : '/user');
+		redirect(303, dashboardFor(locals.role));
 	}
 };
 
@@ -25,6 +31,6 @@ export const actions = {
 			maxAge: 60 * 60 * 24 * 7, // 7 days
 		});
 
-		redirect(303, account.role === 'company' ? '/company' : '/user');
+		redirect(303, dashboardFor(account.role));
 	},
 } satisfies Actions;
