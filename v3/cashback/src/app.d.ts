@@ -1,4 +1,4 @@
-import type { Role } from '$lib/auth/accounts.ts';
+import type { Role } from '$lib/auth/accounts';
 
 declare global {
 	namespace App {

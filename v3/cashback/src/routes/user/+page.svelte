@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { formatCurrency, formatDate } from '$lib/format.ts';
-	import type { Transaction } from '$lib/bank-api/types.ts';
+	import { formatCurrency, formatDate } from '$lib/format';
+	import type { Transaction } from '$lib/bank-api/types';
 
 	let { data } = $props();
 

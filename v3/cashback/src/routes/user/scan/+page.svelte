@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { enhance } from '$app/forms';
 
 	let videoEl: HTMLVideoElement;
@@ -45,13 +45,8 @@
 		}
 	}
 
+	onMount(() => { startScanner(); });
 	onDestroy(() => { stopScanner(); });
-
-	$effect(() => {
-		if (videoEl) {
-			startScanner();
-		}
-	});
 </script>
 
 <div class="scan-page">

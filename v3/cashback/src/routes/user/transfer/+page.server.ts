@@ -1,5 +1,5 @@
-import { bank } from '$lib/server/bank.ts';
-import { formatCurrency } from '$lib/format.ts';
+import { bank } from '$lib/server/bank';
+import { formatCurrency } from '$lib/format';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = ({ locals }) => {

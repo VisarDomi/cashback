@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
-import { DEMO_ACCOUNTS } from '$lib/auth/accounts.ts';
-import { resetBank, getAllCompanies } from '$lib/server/bank.ts';
-import type { Role } from '$lib/auth/accounts.ts';
+import { DEMO_ACCOUNTS } from '$lib/auth/accounts';
+import { resetBank, getAllCompanies } from '$lib/server/bank';
+import type { Role } from '$lib/auth/accounts';
 import type { Actions, PageServerLoad } from './$types';
 
 function dashboardFor(role: string): string {

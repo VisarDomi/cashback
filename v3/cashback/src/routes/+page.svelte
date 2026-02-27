@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DEMO_ACCOUNTS } from '$lib/auth/accounts.ts';
+	import { DEMO_ACCOUNTS } from '$lib/auth/accounts';
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();

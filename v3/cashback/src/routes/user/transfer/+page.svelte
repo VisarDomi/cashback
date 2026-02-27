@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { formatCurrency } from '$lib/format.ts';
+	import { formatCurrency } from '$lib/format';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 
 	let { data, form } = $props();
 
 	let amount = $state('');
-	let maxClicked = $state(false);
 
 	function withdrawAll() {
 		amount = String(data.balance);
-		maxClicked = true;
 	}
 </script>
 
@@ -19,7 +17,7 @@
 		<div class="success-view">
 			<div class="success-icon">✓</div>
 			<h2>Transferta u krye!</h2>
-			<p class="success-detail">{formatCurrency(form.amount)} u transferuan në {form.iban}</p>
+			<p class="success-detail">{formatCurrency(form.amount ?? 0)} u transferuan në {form.iban}</p>
 			<button class="btn-primary" onclick={() => goto('/user')}>Kthehu në ballancë</button>
 		</div>
 	{:else}
@@ -148,6 +146,7 @@
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {
 		-webkit-appearance: none;
+		appearance: none;
 		margin: 0;
 	}
 	input[type='number'] { -moz-appearance: textfield; }

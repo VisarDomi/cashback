@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { bank, addCompany } from '$lib/server/bank.ts';
+import { bank, addCompany } from '$lib/server/bank';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = ({ url }) => {

@@ -1,4 +1,4 @@
-import { bank } from '$lib/server/bank.ts';
+import { bank } from '$lib/server/bank';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = ({ locals }) => {

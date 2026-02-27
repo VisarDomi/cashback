@@ -1,4 +1,4 @@
-import { getAllCompanies, removeCompany } from '$lib/server/bank.ts';
+import { getAllCompanies, removeCompany } from '$lib/server/bank';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = () => {

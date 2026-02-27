@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
-import { bank } from '$lib/server/bank.ts';
-import { parseFiskalizimiUrl, getSample } from '$lib/receipt/parser.ts';
+import { bank } from '$lib/server/bank';
+import { parseFiskalizimiUrl, getSample } from '$lib/receipt/parser';
 import type { Actions } from './$types';
 
 function processAndRedirect(userId: string, iic: string, tin: string, prc: string, crtd: string): never {

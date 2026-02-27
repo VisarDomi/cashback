@@ -1,14 +1,19 @@
 <script lang="ts">
-	import { formatCurrency } from '$lib/format.ts';
+	import { formatCurrency } from '$lib/format';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 
 	let { data, form } = $props();
 
 	let amount = $state('');
+	let showSuccess = $state(false);
+
+	$effect(() => {
+		if (form?.success) showSuccess = true;
+	});
 
 	function depositAnother() {
-		form = null;
+		showSuccess = false;
 		amount = '';
 		invalidateAll();
 	}
@@ -23,11 +28,11 @@
 		<span class="bal-amount">{formatCurrency(data.escrowBalance)}</span>
 	</div>
 
-	{#if form?.success}
+	{#if showSuccess && form?.success}
 		<div class="success-card">
 			<div class="success-icon">✓</div>
 			<h2>Depozita u krye!</h2>
-			<p>{formatCurrency(form.amount)} u shtuan në eskrou</p>
+			<p>{formatCurrency(form.amount ?? 0)} u shtuan në eskrou</p>
 			<button class="btn-primary" onclick={depositAnother}>Bëj një depozitë tjetër</button>
 		</div>
 	{:else}
@@ -146,6 +151,7 @@
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {
 		-webkit-appearance: none;
+		appearance: none;
 		margin: 0;
 	}
 	input[type='number'] { -moz-appearance: textfield; }

@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { bank, resetBank, updateCashbackPercent } from '$lib/server/bank.ts';
+import { bank, resetBank, updateCashbackPercent } from '$lib/server/bank';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = ({ locals }) => {
