@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { DEMO_ACCOUNTS } from '$lib/auth/accounts.ts';
 	import { enhance } from '$app/forms';
+
+	let { data } = $props();
+
+	const nonCompanyAccounts = DEMO_ACCOUNTS.filter(a => a.role !== 'company');
 </script>
 
 <div class="login-page">
@@ -12,7 +16,7 @@
 
 	<div class="accounts">
 		<p class="label">Hyr si:</p>
-		{#each DEMO_ACCOUNTS as account}
+		{#each nonCompanyAccounts as account}
 			<form method="POST" action="?/login" use:enhance>
 				<input type="hidden" name="accountId" value={account.id} />
 				<button class="account-card" type="submit">
@@ -25,6 +29,19 @@
 				</button>
 			</form>
 		{/each}
+		{#if data.latestCompany}
+			<form method="POST" action="?/login" use:enhance>
+				<input type="hidden" name="accountId" value={data.latestCompany.id} />
+				<button class="account-card" type="submit">
+					<span class="emoji">{data.latestCompany.logoEmoji}</span>
+					<div class="info">
+						<span class="name">{data.latestCompany.name}</span>
+						<span class="detail">NIPT: {data.latestCompany.tin}</span>
+					</div>
+					<span class="arrow">→</span>
+				</button>
+			</form>
+		{/if}
 	</div>
 
 	<form method="POST" action="?/reset" use:enhance>
