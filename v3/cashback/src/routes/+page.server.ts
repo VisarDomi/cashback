@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { DEMO_ACCOUNTS } from '$lib/auth/accounts.ts';
+import { resetBank } from '$lib/server/bank.ts';
 import type { Actions, PageServerLoad } from './$types';
 
 function dashboardFor(role: string): string {
@@ -32,5 +33,9 @@ export const actions = {
 		});
 
 		redirect(303, dashboardFor(account.role));
+	},
+	reset: async () => {
+		resetBank();
+		return { reset: true };
 	},
 } satisfies Actions;

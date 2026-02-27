@@ -27,6 +27,10 @@
 		{/each}
 	</div>
 
+	<form method="POST" action="?/reset" use:enhance>
+		<button class="reset-btn" type="submit">Rivendos të dhënat demo</button>
+	</form>
+
 	<p class="footer">Demo — v3</p>
 </div>
 
@@ -129,6 +133,23 @@
 		color: var(--text-dim);
 		flex-shrink: 0;
 	}
+
+	.reset-btn {
+		background: none;
+		border: none;
+		color: var(--text-dim);
+		font-size: 13px;
+		font-family: inherit;
+		cursor: pointer;
+		padding: 8px;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		width: 100%;
+		text-align: center;
+		margin-top: 16px;
+	}
+
+	.reset-btn:hover { color: var(--red); }
 
 	.footer {
 		text-align: center;
