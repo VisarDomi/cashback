@@ -1,16 +1,22 @@
+import { redirect } from '@sveltejs/kit';
 import { bank } from '$lib/server/bank';
-import { formatCurrency } from '$lib/format';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ locals }) => {
+export const load: PageServerLoad = ({ locals, url }) => {
 	const uid = locals.accountId!;
 	const user = bank.getUser(uid);
 	const accounts = bank.getAccountsByOwner(uid);
 	const wallet = accounts.find(a => a.type === 'user_wallet');
 
+	const transferredAmount = url.searchParams.get('amount');
+	const transferredIban = url.searchParams.get('iban');
+
 	return {
 		balance: wallet?.balance ?? 0,
 		iban: user?.iban ?? '',
+		transferred: transferredAmount && transferredIban
+			? { amount: parseInt(transferredAmount), iban: transferredIban }
+			: null,
 	};
 };
 
@@ -34,9 +40,11 @@ export const actions = {
 
 		try {
 			bank.withdrawToBank(uid, val, iban);
-			return { success: true, amount: val, iban };
 		} catch (e: any) {
 			return { success: false, error: e.message };
 		}
+
+		const params = new URLSearchParams({ amount: String(val), iban });
+		redirect(303, `/user/transfer?${params}`);
 	},
 } satisfies Actions;

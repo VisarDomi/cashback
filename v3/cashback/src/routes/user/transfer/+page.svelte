@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { formatCurrency } from '$lib/format';
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 
 	let { data, form } = $props();
 
@@ -13,12 +12,12 @@
 </script>
 
 <div class="transfer">
-	{#if form?.success}
+	{#if data.transferred}
 		<div class="success-view">
 			<div class="success-icon">✓</div>
 			<h2>Transferta u krye!</h2>
-			<p class="success-detail">{formatCurrency(form.amount ?? 0)} u transferuan në {form.iban}</p>
-			<button class="btn-primary" onclick={() => goto('/user')}>Kthehu në ballancë</button>
+			<p class="success-detail">{formatCurrency(data.transferred.amount)} u transferuan në {data.transferred.iban}</p>
+			<a href="/user" class="btn-primary">Kthehu në ballancë</a>
 		</div>
 	{:else}
 		<h1>Transfero në bankë</h1>
@@ -189,6 +188,8 @@
 		font-weight: 600;
 		font-family: inherit;
 		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
 		transition: background 0.15s;
 		margin-top: 8px;
 	}

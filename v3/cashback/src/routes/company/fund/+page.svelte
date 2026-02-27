@@ -1,22 +1,10 @@
 <script lang="ts">
 	import { formatCurrency } from '$lib/format';
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 
 	let { data, form } = $props();
 
 	let amount = $state('');
-	let showSuccess = $state(false);
-
-	$effect(() => {
-		if (form?.success) showSuccess = true;
-	});
-
-	function depositAnother() {
-		showSuccess = false;
-		amount = '';
-		invalidateAll();
-	}
 </script>
 
 <div class="fund-page">
@@ -28,12 +16,12 @@
 		<span class="bal-amount">{formatCurrency(data.escrowBalance)}</span>
 	</div>
 
-	{#if showSuccess && form?.success}
+	{#if data.deposited}
 		<div class="success-card">
 			<div class="success-icon">✓</div>
 			<h2>Depozita u krye!</h2>
-			<p>{formatCurrency(form.amount ?? 0)} u shtuan në eskrou</p>
-			<button class="btn-primary" onclick={depositAnother}>Bëj një depozitë tjetër</button>
+			<p>{formatCurrency(data.deposited)} u shtuan në eskrou</p>
+			<a href="/company/fund" class="btn-primary">Bëj një depozitë tjetër</a>
 		</div>
 	{:else}
 		<form method="POST" use:enhance class="form">
@@ -195,6 +183,8 @@
 		font-weight: 600;
 		font-family: inherit;
 		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
 		transition: background 0.15s;
 	}
 
