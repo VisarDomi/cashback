@@ -8,14 +8,6 @@ export const SEED_COMPANY: Company = {
 	logoEmoji: '☕',
 };
 
-export const SEED_COMPANY_2: Company = {
-	id: 'comp_2',
-	name: 'Accounting Lala',
-	tin: 'M51320022U',
-	cashbackPercent: 5,
-	logoEmoji: '📊',
-};
-
 export const SEED_USER: User = {
 	id: 'user_1',
 	name: 'Ardi Hoxha',
@@ -39,14 +31,6 @@ export const SEED_ACCOUNTS: BankAccount[] = [
 		balance: 50_000,
 		currency: 'ALL',
 		createdAt: '2026-01-10T09:00:00Z',
-	},
-	{
-		id: 'acc_escrow_2',
-		ownerId: 'comp_2',
-		type: 'company_escrow',
-		balance: 30_000,
-		currency: 'ALL',
-		createdAt: '2026-01-12T09:00:00Z',
 	},
 ];
 
