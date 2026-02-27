@@ -16,7 +16,12 @@ interface BankState {
 function load(): BankState {
 	try {
 		const raw = fs.readFileSync(DATA_PATH, 'utf-8');
-		return JSON.parse(raw);
+		const state: BankState = JSON.parse(raw);
+		// Migration: add status to old receipts missing it
+		for (const r of state.receipts) {
+			if (!r.status) r.status = 'credited';
+		}
+		return state;
 	} catch {
 		return seed();
 	}
@@ -131,6 +136,8 @@ export const bank: BankAPI = {
 		};
 		s.transactions.push(tx);
 		save(s);
+		// Auto-process any pending cashbacks now that escrow has funds
+		bank.processPendingCashbacks(companyId);
 		return tx;
 	},
 
@@ -154,6 +161,7 @@ export const bank: BankAPI = {
 			totalAmount,
 			cashbackAmount,
 			cashbackPercent: pct,
+			status: 'pending',
 			createdAt: now(),
 			receiptDate,
 		};
@@ -167,9 +175,11 @@ export const bank: BankAPI = {
 		const escrow = s.accounts.find(a => a.ownerId === receipt.companyId && a.type === 'company_escrow');
 		const wallet = s.accounts.find(a => a.ownerId === receipt.userId && a.type === 'user_wallet');
 		if (!escrow || !wallet) throw new Error('Accounts not found');
-		if (escrow.balance < receipt.cashbackAmount) throw new Error('Insufficient escrow balance');
+		if (escrow.balance < receipt.cashbackAmount) return null;
 		escrow.balance -= receipt.cashbackAmount;
 		wallet.balance += receipt.cashbackAmount;
+		const r = s.receipts.find(r => r.id === receipt.id);
+		if (r) r.status = 'credited';
 		const company = s.companies.find(c => c.id === receipt.companyId);
 		const tx: Transaction = {
 			id: genId(s, 'tx'),
@@ -184,6 +194,45 @@ export const bank: BankAPI = {
 		s.transactions.push(tx);
 		save(s);
 		return tx;
+	},
+
+	processPendingCashbacks(companyId) {
+		const s = load();
+		const escrow = s.accounts.find(a => a.ownerId === companyId && a.type === 'company_escrow');
+		if (!escrow) return;
+		const pending = s.receipts
+			.filter(r => r.companyId === companyId && r.status === 'pending')
+			.sort((a, b) => a.createdAt.localeCompare(b.createdAt)); // FIFO
+		for (const receipt of pending) {
+			if (escrow.balance < receipt.cashbackAmount) break;
+			const wallet = s.accounts.find(a => a.ownerId === receipt.userId && a.type === 'user_wallet');
+			if (!wallet) continue;
+			escrow.balance -= receipt.cashbackAmount;
+			wallet.balance += receipt.cashbackAmount;
+			receipt.status = 'credited';
+			const company = s.companies.find(c => c.id === companyId);
+			const tx: Transaction = {
+				id: genId(s, 'tx'),
+				type: 'cashback_credit',
+				fromAccountId: escrow.id,
+				toAccountId: wallet.id,
+				amount: receipt.cashbackAmount,
+				description: `Cashback ${receipt.cashbackPercent}% — ${company?.name ?? 'N/A'}`,
+				receiptId: receipt.id,
+				createdAt: now(),
+			};
+			s.transactions.push(tx);
+		}
+		save(s);
+	},
+
+	getPendingCashbacks(companyId) {
+		const s = load();
+		const pending = s.receipts.filter(r => r.companyId === companyId && r.status === 'pending');
+		return {
+			count: pending.length,
+			total: pending.reduce((sum, r) => sum + r.cashbackAmount, 0),
+		};
 	},
 
 	withdrawToBank(userId, amount, iban) {

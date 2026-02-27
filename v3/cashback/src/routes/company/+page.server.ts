@@ -10,7 +10,10 @@ export const load: PageServerLoad = ({ locals }) => {
 	const escrowId = escrow?.id ?? '';
 	const recentTx = escrowId ? bank.getTransactions(escrowId).slice(0, 5) : [];
 	const receipts = bank.getReceiptsByCompany(cid);
-	const totalCashbackPaid = receipts.reduce((sum, r) => sum + r.cashbackAmount, 0);
+	const totalCashbackPaid = receipts
+		.filter(r => r.status === 'credited')
+		.reduce((sum, r) => sum + r.cashbackAmount, 0);
+	const pending = bank.getPendingCashbacks(cid);
 
 	return {
 		company,
@@ -19,5 +22,7 @@ export const load: PageServerLoad = ({ locals }) => {
 		recentTx,
 		receiptCount: receipts.length,
 		totalCashbackPaid,
+		pendingCount: pending.count,
+		pendingTotal: pending.total,
 	};
 };

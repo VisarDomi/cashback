@@ -48,6 +48,7 @@ export interface Receipt {
 	totalAmount: number;
 	cashbackAmount: number;
 	cashbackPercent: number;
+	status: 'credited' | 'pending';
 	createdAt: string;  // receipt scan timestamp
 	receiptDate: string; // original receipt date (crtd from QR)
 }
@@ -84,7 +85,11 @@ export interface BankAPI {
 	// Cashback flow
 	isReceiptProcessed(iic: string): boolean;
 	processReceipt(userId: string, companyId: string, iic: string, tin: string, totalAmount: number, receiptDate: string): Receipt;
-	creditCashback(receipt: Receipt): Transaction;
+	creditCashback(receipt: Receipt): Transaction | null;
+
+	// Pending cashback queue
+	processPendingCashbacks(companyId: string): void;
+	getPendingCashbacks(companyId: string): { count: number; total: number };
 
 	// User withdrawal
 	withdrawToBank(userId: string, amount: number, iban: string): Transaction;

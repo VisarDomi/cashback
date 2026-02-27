@@ -53,10 +53,15 @@
 				{#each data.receipts as r}
 					<div class="item">
 						<div class="item-info">
-							<span class="item-desc">Faturë {formatCurrency(r.totalAmount)}</span>
+							<span class="item-desc">
+								Faturë {formatCurrency(r.totalAmount)}
+								{#if r.status === 'pending'}
+									<span class="badge-pending">në pritje</span>
+								{/if}
+							</span>
 							<span class="item-date">NIVF: {r.iic.slice(0, 8)}... — {formatDate(r.receiptDate)}</span>
 						</div>
-						<span class="item-amount" style="color: var(--green)">
+						<span class="item-amount" style="color: {r.status === 'pending' ? '#f59e0b' : 'var(--green)'}">
 							+{formatCurrency(r.cashbackAmount)}
 						</span>
 					</div>
@@ -138,6 +143,18 @@
 	.item-desc {
 		font-size: 14px;
 		font-weight: 500;
+	}
+
+	.badge-pending {
+		display: inline-block;
+		font-size: 11px;
+		font-weight: 600;
+		color: #f59e0b;
+		background: #f59e0b18;
+		padding: 1px 6px;
+		border-radius: 6px;
+		margin-left: 6px;
+		vertical-align: middle;
 	}
 
 	.item-date {

@@ -7,6 +7,7 @@ export const load: PageServerLoad = ({ url }) => {
 	const total = url.searchParams.get('total');
 	const cashback = url.searchParams.get('cashback');
 	const date = url.searchParams.get('date');
+	const status = url.searchParams.get('status') === 'pending' ? 'pending' as const : 'credited' as const;
 
 	if (!iic || !tin || !total || !cashback || !date) {
 		redirect(303, '/user/scan');
@@ -19,6 +20,7 @@ export const load: PageServerLoad = ({ url }) => {
 			total: parseFloat(total),
 			cashback: parseFloat(cashback),
 			date,
+			status,
 		},
 	};
 };

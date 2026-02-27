@@ -5,10 +5,17 @@
 </script>
 
 <div class="scan-page">
-	<div class="verified-badge">
-		<span class="check-anim">✓</span>
-		<h2>Cashback i kredituar!</h2>
-	</div>
+	{#if data.receipt.status === 'credited'}
+		<div class="verified-badge">
+			<span class="check-anim">✓</span>
+			<h2>Cashback i kredituar!</h2>
+		</div>
+	{:else}
+		<div class="verified-badge pending">
+			<span class="check-anim pending-icon">⏳</span>
+			<h2>Cashback në pritje</h2>
+		</div>
+	{/if}
 
 	<div class="card receipt-card">
 		<h3>Fatura</h3>
@@ -30,12 +37,21 @@
 		</div>
 	</div>
 
-	<div class="card cashback-card">
-		<div class="cashback-icon">✓</div>
-		<span class="cashback-label">Cashback i fituar</span>
-		<span class="cashback-amount">+{formatCurrency(data.receipt.cashback)}</span>
-		<span class="cashback-hint">Kredituar në portofolin tuaj</span>
-	</div>
+	{#if data.receipt.status === 'credited'}
+		<div class="card cashback-card">
+			<div class="cashback-icon">✓</div>
+			<span class="cashback-label">Cashback i fituar</span>
+			<span class="cashback-amount">+{formatCurrency(data.receipt.cashback)}</span>
+			<span class="cashback-hint">Kredituar në portofolin tuaj</span>
+		</div>
+	{:else}
+		<div class="card cashback-card pending">
+			<div class="cashback-icon pending-icon">⏳</div>
+			<span class="cashback-label">Cashback i fituar</span>
+			<span class="cashback-amount">+{formatCurrency(data.receipt.cashback)}</span>
+			<span class="cashback-hint">Kompania duhet të financojë llogarinë eskrou për ta kredituar</span>
+		</div>
+	{/if}
 
 	<div class="actions">
 		<a href="/user/scan" class="btn-primary">Skano një tjetër</a>
@@ -65,6 +81,7 @@
 	}
 
 	.verified-badge h2 { color: var(--green); }
+	.verified-badge.pending h2 { color: #f59e0b; }
 
 	.check-anim {
 		display: flex;
@@ -79,6 +96,8 @@
 		font-weight: 700;
 		animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
+
+	.pending-icon { background: #f59e0b; }
 
 	@keyframes pop {
 		0% { transform: scale(0); opacity: 0; }
@@ -112,6 +131,11 @@
 	.cashback-card {
 		border-color: var(--green);
 		background: #22c55e08;
+	}
+
+	.cashback-card.pending {
+		border-color: #f59e0b;
+		background: #f59e0b08;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
@@ -135,6 +159,7 @@
 
 	.cashback-label { font-size: 13px; color: var(--text-dim); }
 	.cashback-amount { font-size: 24px; font-weight: 800; color: var(--green); }
+	.cashback-card.pending .cashback-amount { color: #f59e0b; }
 	.cashback-hint { font-size: 12px; color: var(--text-dim); }
 
 	.actions {

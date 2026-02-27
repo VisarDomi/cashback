@@ -142,7 +142,7 @@
 		appearance: none;
 		margin: 0;
 	}
-	input[type='number'] { -moz-appearance: textfield; }
+	input[type='number'] { -moz-appearance: textfield; appearance: textfield; }
 
 	.presets {
 		display: grid;

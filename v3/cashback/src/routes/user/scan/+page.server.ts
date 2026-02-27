@@ -19,7 +19,7 @@ function processAndRedirect(userId: string, iic: string, tin: string, prc: strin
 	}
 
 	const receipt = bank.processReceipt(userId, company.id, iic, tin, totalAmount, crtd);
-	bank.creditCashback(receipt);
+	const tx = bank.creditCashback(receipt);
 
 	const params = new URLSearchParams({
 		iic,
@@ -27,6 +27,7 @@ function processAndRedirect(userId: string, iic: string, tin: string, prc: strin
 		total: String(totalAmount),
 		cashback: String(receipt.cashbackAmount),
 		date: crtd,
+		status: tx ? 'credited' : 'pending',
 	});
 	redirect(303, `/user/scan/result?${params}`);
 }

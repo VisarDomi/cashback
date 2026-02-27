@@ -33,6 +33,17 @@
 		</div>
 	</div>
 
+	{#if data.pendingCount > 0}
+		<a href="/company/fund" class="pending-card">
+			<span class="pending-icon">⏳</span>
+			<div class="pending-info">
+				<span class="pending-title">{data.pendingCount} cashback në pritje</span>
+				<span class="pending-amount">{formatCurrency(data.pendingTotal)} borxh ndaj përdoruesve</span>
+			</div>
+			<span class="pending-cta">Fondo tani →</span>
+		</a>
+	{/if}
+
 	<div class="section">
 		<h2>Aktiviteti i fundit</h2>
 		{#if data.recentTx.length === 0}
@@ -121,6 +132,35 @@
 	.stat-card:not(.accent) .stat-value {
 		font-size: 18px;
 	}
+
+	.pending-card {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background: #f59e0b10;
+		border: 1px solid #f59e0b;
+		border-radius: 12px;
+		padding: 14px;
+		text-decoration: none;
+		color: inherit;
+		transition: background 0.15s;
+	}
+
+	.pending-card:hover { background: #f59e0b18; }
+
+	.pending-icon { font-size: 24px; flex-shrink: 0; }
+
+	.pending-info {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.pending-title { font-size: 14px; font-weight: 600; color: #f59e0b; }
+	.pending-amount { font-size: 12px; color: var(--text-dim); }
+	.pending-cta { font-size: 13px; font-weight: 600; color: #f59e0b; flex-shrink: 0; }
 
 	h2 {
 		font-size: 16px;
