@@ -1,7 +1,18 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 
 	let { children } = $props();
+
+	const tabs = [
+		{ href: '/admin', label: 'Kompani', icon: '🏢' },
+		{ href: '/admin/scan', label: 'Skano', icon: '📷' },
+	];
+
+	function isActive(href: string): boolean {
+		if (href === '/admin') return page.url.pathname === '/admin';
+		return page.url.pathname.startsWith(href);
+	}
 </script>
 
 <div class="admin-shell">
@@ -15,6 +26,15 @@
 	<main>
 		{@render children()}
 	</main>
+
+	<nav class="bottom-nav">
+		{#each tabs as tab}
+			<a href={tab.href} class="tab" class:active={isActive(tab.href)}>
+				<span class="tab-icon">{tab.icon}</span>
+				<span class="tab-label">{tab.label}</span>
+			</a>
+		{/each}
+	</nav>
 </div>
 
 <style>
@@ -62,6 +82,44 @@
 	main {
 		flex: 1;
 		padding: 20px;
-		padding-bottom: calc(20px + env(safe-area-inset-bottom));
+		padding-bottom: 80px;
+	}
+
+	.bottom-nav {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		max-width: 420px;
+		display: flex;
+		background: var(--surface);
+		border-top: 1px solid var(--border);
+		padding-bottom: env(safe-area-inset-bottom, 8px);
+		z-index: 10;
+	}
+
+	.tab {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		padding: 10px 0;
+		color: var(--text-dim);
+		transition: color 0.15s;
+	}
+
+	.tab:hover, .tab.active {
+		color: var(--accent-light);
+	}
+
+	.tab-icon {
+		font-size: 20px;
+	}
+
+	.tab-label {
+		font-size: 11px;
+		font-weight: 600;
 	}
 </style>
