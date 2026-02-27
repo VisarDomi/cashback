@@ -35,7 +35,8 @@ export function parseFiskalizimiUrl(raw: string): ReceiptData | null {
 			const hashPart = trimmed.split('#')[1];
 			if (!hashPart) return null;
 			const queryStr = hashPart.replace(/^\/verify\?/, '');
-			const params = new URLSearchParams(queryStr);
+			// URLSearchParams decodes '+' as space — preserve it for timezone offsets
+			const params = new URLSearchParams(queryStr.replaceAll('+', '%2B'));
 			const iic = params.get('iic');
 			const tin = params.get('tin');
 			const crtd = params.get('crtd');
