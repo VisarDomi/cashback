@@ -34,8 +34,9 @@ export const actions = {
 
 		redirect(303, dashboardFor(account.role));
 	},
-	reset: async () => {
+	reset: async ({ cookies }) => {
 		resetBank();
+		cookies.delete('cashback_session', { path: '/' });
 		return { reset: true };
 	},
 } satisfies Actions;
