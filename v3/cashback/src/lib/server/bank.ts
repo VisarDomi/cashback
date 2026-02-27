@@ -79,6 +79,11 @@ export function addCompany(tin: string, name: string, cashbackPercent: number, l
 	return company;
 }
 
+export function getAllCompanies(): Company[] {
+	const s = load();
+	return s.companies;
+}
+
 export function removeCompany(tin: string): boolean {
 	const s = load();
 	const idx = s.companies.findIndex(c => c.tin === tin);

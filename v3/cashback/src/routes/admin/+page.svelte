@@ -4,7 +4,7 @@
 
 	type View = 'scanner' | 'result' | 'error';
 
-	let { form } = $props();
+	let { form, data } = $props();
 
 	let view = $state<View>('scanner');
 	let videoEl: HTMLVideoElement;
@@ -229,6 +229,25 @@
 		</div>
 	{/if}
 </div>
+
+{#if data.companies.length > 0}
+	<div class="company-list">
+		<h2>Kompani të regjistruara ({data.companies.length})</h2>
+		{#each data.companies as company}
+			<div class="company-row">
+				<span class="company-emoji">{company.logoEmoji}</span>
+				<div class="company-info">
+					<span class="company-name">{company.name}</span>
+					<span class="company-detail">{company.tin} — {company.cashbackPercent}%</span>
+				</div>
+				<form method="POST" action="?/remove" use:enhance>
+					<input type="hidden" name="tin" value={company.tin} />
+					<button class="remove-btn" type="submit" title="Hiq">✕</button>
+				</form>
+			</div>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.admin-page {
@@ -491,4 +510,73 @@
 	}
 
 	.btn-danger:hover { opacity: 1; }
+
+	/* Company list */
+	.company-list {
+		margin-top: 32px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+	}
+
+	.company-list h2 {
+		font-size: 16px;
+		font-weight: 700;
+		margin-bottom: 12px;
+	}
+
+	.company-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		margin-bottom: 8px;
+	}
+
+	.company-emoji {
+		font-size: 24px;
+		flex-shrink: 0;
+	}
+
+	.company-info {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.company-name {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.company-detail {
+		font-size: 12px;
+		color: var(--text-dim);
+		margin-top: 2px;
+	}
+
+	.remove-btn {
+		width: 32px;
+		height: 32px;
+		border-radius: 8px;
+		border: 1px solid var(--border);
+		background: none;
+		color: var(--text-dim);
+		font-size: 14px;
+		cursor: pointer;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.15s;
+	}
+
+	.remove-btn:hover {
+		border-color: var(--red);
+		color: var(--red);
+		background: #ef444408;
+	}
 </style>

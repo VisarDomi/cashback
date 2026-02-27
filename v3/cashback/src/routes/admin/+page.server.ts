@@ -1,7 +1,18 @@
 import { bank } from '$lib/server/bank.ts';
-import { addCompany, removeCompany } from '$lib/server/bank.ts';
+import { addCompany, removeCompany, getAllCompanies } from '$lib/server/bank.ts';
 import { parseFiskalizimiUrl } from '$lib/receipt/parser.ts';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = () => {
+	return {
+		companies: getAllCompanies().map(c => ({
+			name: c.name,
+			tin: c.tin,
+			cashbackPercent: c.cashbackPercent,
+			logoEmoji: c.logoEmoji,
+		})),
+	};
+};
 
 export const actions = {
 	scan: async ({ request }) => {
