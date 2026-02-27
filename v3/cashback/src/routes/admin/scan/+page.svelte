@@ -204,7 +204,9 @@
 		<div class="error-view">
 			<span class="error-big">✕</span>
 			<h2>{form?.error ?? 'Gabim'}</h2>
-			<button class="btn-primary" onclick={scanAnother}>Provo prsëri</button>
+		</div>
+		<div class="actions">
+			<button class="btn-primary" onclick={scanAnother}>Provo përsëri</button>
 		</div>
 	{/if}
 </div>
@@ -213,7 +215,7 @@
 	.admin-page {
 		display: flex;
 		flex-direction: column;
-		min-height: calc(100dvh - 100px);
+		padding-bottom: 80px; /* space for fixed actions */
 	}
 
 	h1 {
@@ -239,7 +241,6 @@
 		background: var(--surface);
 		border-radius: 16px;
 		overflow: hidden;
-		margin-bottom: 20px;
 	}
 
 	.viewfinder video {
@@ -414,13 +415,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		position: sticky;
-		bottom: 0;
-		padding: 16px 0 calc(60px + env(safe-area-inset-bottom));
+		position: fixed;
+		bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		max-width: 420px;
+		padding: 12px 20px;
 		background: var(--bg);
-		margin: 0 -20px;
-		padding-left: 20px;
-		padding-right: 20px;
+		z-index: 5;
 	}
 
 	.btn-primary {
