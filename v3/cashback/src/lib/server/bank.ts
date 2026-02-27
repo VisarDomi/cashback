@@ -79,6 +79,18 @@ export function addCompany(tin: string, name: string, cashbackPercent: number, l
 	return company;
 }
 
+export function removeCompany(tin: string): boolean {
+	const s = load();
+	const idx = s.companies.findIndex(c => c.tin === tin);
+	if (idx === -1) return false;
+	const company = s.companies[idx];
+	s.companies.splice(idx, 1);
+	// Remove escrow account
+	s.accounts = s.accounts.filter(a => !(a.ownerId === company.id && a.type === 'company_escrow'));
+	save(s);
+	return true;
+}
+
 export function updateCashbackPercent(companyId: string, percent: number) {
 	const s = load();
 	const comp = s.companies.find(c => c.id === companyId);

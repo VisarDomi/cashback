@@ -136,6 +136,23 @@
 			<button class="btn-primary" onclick={scanAnother}>Skano një tjetër</button>
 		</div>
 
+	{:else if view === 'result' && form?.success && form?.removed}
+		<div class="status-badge removed">
+			<span class="status-icon">✓</span>
+			<h2>Kompania u hoq</h2>
+		</div>
+
+		<div class="card">
+			<div class="row">
+				<span class="label">NIPT</span>
+				<span class="value mono">{form.tin}</span>
+			</div>
+		</div>
+
+		<div class="actions">
+			<button class="btn-primary" onclick={scanAnother}>Skano një tjetër</button>
+		</div>
+
 	{:else if view === 'result' && form?.success && form?.exists}
 		<div class="status-badge exists">
 			<span class="status-icon">✓</span>
@@ -158,6 +175,10 @@
 		</div>
 
 		<div class="actions">
+			<form method="POST" action="?/remove" use:enhance>
+				<input type="hidden" name="tin" value={form.company.tin} />
+				<button class="btn-danger" type="submit">Hiq kompaninë</button>
+			</form>
 			<button class="btn-primary" onclick={scanAnother}>Skano një tjetër</button>
 		</div>
 
@@ -295,6 +316,7 @@
 	.status-badge.exists h2 { color: var(--accent-light); }
 	.status-badge.new-company h2 { color: var(--text); }
 	.status-badge.added h2 { color: var(--green); }
+	.status-badge.removed h2 { color: var(--red); }
 
 	.status-icon {
 		display: flex;
@@ -317,6 +339,10 @@
 
 	.status-badge.added .status-icon {
 		background: var(--green);
+	}
+
+	.status-badge.removed .status-icon {
+		background: var(--red);
 	}
 
 	@keyframes pop {
@@ -448,4 +474,21 @@
 	}
 
 	.btn-secondary:hover { border-color: var(--accent); }
+
+	.btn-danger {
+		width: 100%;
+		padding: 14px;
+		background: var(--red);
+		color: white;
+		border: none;
+		border-radius: 12px;
+		font-size: 16px;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		opacity: 0.9;
+		transition: opacity 0.15s;
+	}
+
+	.btn-danger:hover { opacity: 1; }
 </style>

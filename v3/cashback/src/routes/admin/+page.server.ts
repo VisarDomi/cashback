@@ -1,5 +1,5 @@
 import { bank } from '$lib/server/bank.ts';
-import { addCompany } from '$lib/server/bank.ts';
+import { addCompany, removeCompany } from '$lib/server/bank.ts';
 import { parseFiskalizimiUrl } from '$lib/receipt/parser.ts';
 import type { Actions } from './$types';
 
@@ -64,6 +64,25 @@ export const actions = {
 				cashbackPercent: company.cashbackPercent,
 				logoEmoji: company.logoEmoji,
 			},
+		};
+	},
+	remove: async ({ request }) => {
+		const data = await request.formData();
+		const tin = data.get('tin') as string;
+
+		if (!tin) {
+			return { success: false, error: 'NIPT mungon' };
+		}
+
+		const removed = removeCompany(tin);
+		if (!removed) {
+			return { success: false, error: `Kompania me NIPT ${tin} nuk u gjet` };
+		}
+
+		return {
+			success: true,
+			removed: true,
+			tin,
 		};
 	},
 } satisfies Actions;
