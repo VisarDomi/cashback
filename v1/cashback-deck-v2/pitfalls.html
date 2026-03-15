@@ -112,10 +112,10 @@
 <p>The business plan prices development at $50/hr (market rate). For the grant, the realistic rate is <strong>$20/hr</strong> (Albanian market). This changes everything:</p>
 
 <table>
-  <tr><th>Scenario</th><th>Monthly Pay</th><th>Equity</th><th>8mo Total Salary</th><th>Market Discount Given</th></tr>
-  <tr><td><span class="tag tag-good">A</span> 50% equity, $20/hr</td><td>$3,200</td><td class="pts">50%</td><td>$25,600</td><td>~$25K</td></tr>
-  <tr><td><span class="tag tag-negotiate">B</span> 33% equity, max salary</td><td>$4,000</td><td class="pts-mid">33%</td><td>$32,000</td><td>~$12K</td></tr>
-  <tr><td><span class="tag tag-warn">C</span> 33% equity, side project</td><td>$1,500</td><td class="pts-mid">33%</td><td>$12,000</td><td>~$38K</td></tr>
+  <tr><th>Scenario</th><th>Monthly Pay</th><th>Equity</th><th>8mo Total Salary</th></tr>
+  <tr><td><span class="tag tag-good">A</span> 50% equity, $20/hr</td><td>$3,200</td><td class="pts">50%</td><td>$25,600</td></tr>
+  <tr><td><span class="tag tag-negotiate">B</span> 33% equity, max salary</td><td>$4,000</td><td class="pts-mid">33%</td><td>$32,000</td></tr>
+  <tr><td><span class="tag tag-warn">C</span> 33% equity, side project</td><td>$1,500</td><td class="pts-mid">33%</td><td>$12,000</td></tr>
 </table>
 
 <div class="card-warn">
@@ -137,14 +137,15 @@
   <p><strong>With vesting:</strong> equity unlocks over time. Leave early = keep only what you earned.</p>
 </div>
 
-<p>Proposed structure for 8-month grant period:</p>
+<p>Standard structure: <strong>4-year vesting, 1-year cliff, monthly thereafter.</strong></p>
 <table>
-  <tr><th>Period</th><th>What happens</th></tr>
-  <tr><td>Month 1-3</td><td><span class="tag tag-warn">Cliff</span> Nobody owns anything yet. Leave = 0% equity.</td></tr>
-  <tr><td>Month 4</td><td><span class="tag tag-negotiate">Cliff vests</span> 50% of promised equity unlocks (16.5% of 33%).</td></tr>
-  <tr><td>Month 5-8</td><td><span class="tag tag-info">Monthly vesting</span> ~4.125% additional per month.</td></tr>
-  <tr><td>Month 8</td><td><span class="tag tag-good">Fully vested</span> Everyone who stayed has their full share.</td></tr>
+  <tr><th>Period</th><th>What happens</th><th>Equity earned (of 33%)</th></tr>
+  <tr><td>Month 1-11</td><td><span class="tag tag-warn">Cliff</span> Nothing vested yet. Leave = 0%.</td><td>0%</td></tr>
+  <tr><td>Month 12</td><td><span class="tag tag-negotiate">Cliff vests</span> 25% of total equity unlocks at once.</td><td>8.25%</td></tr>
+  <tr><td>Month 13-48</td><td><span class="tag tag-info">Monthly vesting</span> ~0.69% per month.</td><td>+0.69%/mo</td></tr>
+  <tr><td>Month 48</td><td><span class="tag tag-good">Fully vested</span> Full equity earned.</td><td>33%</td></tr>
 </table>
+<p style="margin-top: 8px; color: #71717a;">The grant covers 8 months, but the company lives longer. Vesting should match the company's timeline, not the grant's.</p>
 
 <!-- DELIVERABLES -->
 <h2>4. Deliverables: Promise Conservative, Deliver Adequate</h2>
@@ -201,11 +202,13 @@
     <h3>Tranche 3 — 30% (~12.6K EUR)</h3>
     <p><em>After final financial report</em></p>
     <ul>
-      <li>App live with real transactions</li>
-      <li>Multiple merchants</li>
-      <li>Revenue model validated (small revenue OK)</li>
+      <li>App live in production (publicly accessible)</li>
+      <li>Merchant partnerships documented (LOIs, agreements)</li>
+      <li>Banking partner evaluation completed (documented conversations, terms comparison)</li>
+      <li>Revenue model documented with projections</li>
       <li>Full financial documentation for KLSH</li>
     </ul>
+    <p style="margin-top: 8px; color: #71717a;">No real transactions promised — banking integration depends on partner timelines outside your control. Document the effort, not the outcome.</p>
   </div>
 </div>
 
