@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Countdown — Cashback Albania</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #e4e4e7;
+    background: #09090b;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22px; color: #fff; margin-bottom: 4px; }
+  .subtitle { color: #71717a; margin-bottom: 24px; }
+  h2 {
+    font-size: 16px;
+    color: #fff;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #27272a;
+  }
+  h3 { font-size: 14px; color: #a1a1aa; margin-top: 16px; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #27272a; }
+  th { color: #a1a1aa; font-size: 13px; font-weight: 600; }
+  td { font-size: 14px; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-dev { background: #1e1b4b; color: #a5b4fc; }
+  .tag-connections { background: #4c1d95; color: #c4b5fd; }
+  .tag-finance { background: #164e63; color: #67e8f9; }
+  .tag-done { background: #14532d; color: #86efac; }
+  .tag-blocked { background: #7f1d1d; color: #fca5a5; }
+  .tag-low { background: #14532d; color: #86efac; }
+  .tag-medium { background: #78350f; color: #fcd34d; }
+  .tag-skip { background: #27272a; color: #71717a; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .card-urgent {
+    background: #18181b;
+    border: 1px solid #7f1d1d;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .highlight { color: #22c55e; }
+  .warn { color: #fca5a5; }
+  .deadline { color: #ef4444; font-weight: 700; font-size: 18px; }
+  a { color: #60a5fa; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .back { display: inline-block; margin-bottom: 16px; font-size: 13px; }
+  .timeline { display: flex; gap: 0; margin: 16px 0; }
+  .timeline-block {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid #27272a;
+  }
+  .timeline-block:first-child { border-radius: 8px 0 0 8px; }
+  .timeline-block:last-child { border-radius: 0 8px 8px 0; }
+  .timeline-elapsed { background: #1c1917; color: #71717a; }
+  .timeline-now { background: #172554; color: #93c5fd; border-color: #1e40af; }
+  .timeline-remaining { background: #18181b; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back">&larr; Back to Grant Overview</a>
+
+<h1>Application Countdown</h1>
+<p class="subtitle">12 working days remain &middot; Deadline: March 31, 2026</p>
+
+<!-- DEADLINE -->
+<div class="card-urgent">
+  <p class="deadline">Deadline: Tuesday, March 31, 2026</p>
+  <p>Call published: February 17, 2026 &middot; Window: 30 working days &middot; 12 working days remaining as of March 15</p>
+  <p style="margin-top: 8px;">Source: <a href="https://albaniatech.org/e3-million-for-startups-grant-2026-call-officially-launched/">Albania Tech announcement</a> + regulation Art. 19 (10-30 working day window)</p>
+</div>
+
+<!-- TIMELINE -->
+<h2>Timeline</h2>
+
+<div class="timeline">
+  <div class="timeline-block timeline-elapsed">Feb 17 &mdash; Mar 14<br><strong>18 days elapsed</strong></div>
+  <div class="timeline-block timeline-now">Mar 15<br><strong>TODAY</strong></div>
+  <div class="timeline-block timeline-remaining">Mar 16 &mdash; Mar 25<br><strong>Work window</strong></div>
+  <div class="timeline-block timeline-remaining">Mar 26 &mdash; Mar 31<br><strong>Assembly &amp; submit</strong></div>
+</div>
+
+<p>Target: all deliverables done by <strong>March 25</strong> so there's a full week to assemble, review, and submit the e-Albania application.</p>
+
+<!-- WHAT EACH PERSON DOES -->
+<h2>Owner Breakdown</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3><span class="tag tag-dev">Dev</span> delivers by Mar 25</h3>
+    <ul>
+      <li><strong>Risk matrix</strong> &mdash; half day<br>5-6 risks with probability, impact, mitigation. Already discussed in the cost analysis: single developer, banking integration, regulatory, market adoption, tech stack dependency.</li>
+      <li><strong>Team section in business plan</strong> &mdash; few hours<br>Who we are, what each person does, why this team executes. Needs input from co-founders for their narratives.</li>
+      <li><strong>Competitive analysis support</strong> &mdash; few hours<br>Research to confirm no fiskalizimi-based cashback exists in Albania. Frame the "first mover" pitch.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-connections">Connections</span> + <span class="tag tag-finance">Finance</span> deliver by Mar 25</h3>
+    <ul>
+      <li><strong>Their CVs</strong> &mdash; low effort, no excuse<br>Committee scores the whole team (10 pts). Polished CVs showing relevant experience. Non-negotiable.</li>
+      <li><strong>Revenue model</strong> &mdash; medium effort<br>X merchants &times; Y% fee &times; Z receipts/month = revenue. 3-year projections. Finance guy's core responsibility.</li>
+      <li><strong>Budget restructure</strong> &mdash; medium effort<br>Map the cost analysis to grant categories with justifications per line item (value, timeline, budget). Caps are negotiable but must be argued.</li>
+      <li><strong>Market sizing</strong> &mdash; medium effort<br>How many businesses use fiskalizimi? Daily receipt volume? Smartphone penetration? Sources: INSTAT, tax authority reports.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FULL TASK TABLE -->
+<h2>All Action Items — Effort &amp; Defensibility</h2>
+
+<table>
+  <tr><th>Item</th><th>Owner</th><th>Effort</th><th>Scoring Impact</th><th>Status</th></tr>
+  <tr>
+    <td><strong>Co-founder CVs</strong></td>
+    <td><span class="tag tag-connections">Connections</span> <span class="tag tag-finance">Finance</span></td>
+    <td><span class="tag tag-low">Low</span></td>
+    <td>10 pts &mdash; Team credentials</td>
+    <td><span class="tag tag-blocked">Blocked on co-founders</span></td>
+  </tr>
+  <tr>
+    <td><strong>Risk matrix</strong></td>
+    <td><span class="tag tag-dev">Dev</span></td>
+    <td><span class="tag tag-low">Low</span> half day</td>
+    <td>10 pts &mdash; Tech risk &amp; implementation</td>
+    <td>Not started</td>
+  </tr>
+  <tr>
+    <td><strong>Team section in doc</strong></td>
+    <td><span class="tag tag-dev">Dev</span></td>
+    <td><span class="tag tag-low">Low</span> few hours</td>
+    <td>10 pts &mdash; Team credentials</td>
+    <td>Not started</td>
+  </tr>
+  <tr>
+    <td><strong>Revenue model</strong></td>
+    <td><span class="tag tag-finance">Finance</span></td>
+    <td><span class="tag tag-medium">Medium</span></td>
+    <td>10 pts &mdash; Revenue potential</td>
+    <td><span class="tag tag-blocked">Blocked on finance</span></td>
+  </tr>
+  <tr>
+    <td><strong>Budget restructure</strong></td>
+    <td><span class="tag tag-finance">Finance</span></td>
+    <td><span class="tag tag-medium">Medium</span></td>
+    <td>10 pts &mdash; Fund usage &amp; appropriateness</td>
+    <td><span class="tag tag-blocked">Blocked on finance</span></td>
+  </tr>
+  <tr>
+    <td><strong>Competitive analysis</strong></td>
+    <td><span class="tag tag-connections">Connections</span> <span class="tag tag-dev">Dev</span></td>
+    <td><span class="tag tag-low">Low</span></td>
+    <td>10 pts &mdash; Market need</td>
+    <td>Not started</td>
+  </tr>
+  <tr>
+    <td><strong>Market sizing</strong></td>
+    <td><span class="tag tag-connections">Connections</span></td>
+    <td><span class="tag tag-medium">Medium</span></td>
+    <td>10 pts &mdash; Market need</td>
+    <td><span class="tag tag-blocked">Blocked on connections</span></td>
+  </tr>
+</table>
+
+<!-- DEFENSIBILITY -->
+<h2>What's Defensible vs. What's Arbitrary</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3><span class="highlight">Defensible</span> &mdash; grounded in data or existing work</h3>
+    <ul>
+      <li><strong>Risk matrix</strong> &mdash; risks come directly from the cost analysis. Single developer, banking dependency, regulatory unknowns, market adoption. Already analyzed, just needs structuring.</li>
+      <li><strong>Team section</strong> &mdash; dev CV is ready, just need co-founder narratives. Factual, easy to write.</li>
+      <li><strong>Competitive analysis</strong> &mdash; verifiable claim. Either someone else does fiskalizimi cashback or nobody does. A few hours of research confirms it.</li>
+      <li><strong>Budget</strong> &mdash; the cost analysis exists. Restructuring into grant categories is formatting work, not guesswork. Use $20/hr Albanian rate, Albanian hardware prices.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="warn">Needs real work</span> &mdash; can't be faked or estimated</h3>
+    <ul>
+      <li><strong>Revenue model</strong> &mdash; requires actual merchant fee research, receipt volume data, realistic conversion rates. Finance guy must own this. Guessing numbers will hurt at evaluation.</li>
+      <li><strong>Market sizing</strong> &mdash; needs INSTAT data, tax authority numbers, smartphone stats. Can't make up "100K businesses use fiskalizimi" without a source. Committee will check.</li>
+      <li><strong>Co-founder CVs</strong> &mdash; only they can write them. No substitute.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WHAT CAN'T BE DONE ALONE -->
+<h2>Blockers: What Dev Cannot Do Alone</h2>
+
+<div class="card-urgent">
+  <p>4 of the 7 action items are <strong>blocked on co-founders</strong>. The meeting must result in hard deadlines for each:</p>
+  <ul>
+    <li><strong>CVs</strong> &mdash; due by March 20 (5 working days). No extensions.</li>
+    <li><strong>Revenue model</strong> &mdash; due by March 25. Finance guy's deliverable.</li>
+    <li><strong>Budget restructure</strong> &mdash; due by March 25. Finance guy's deliverable.</li>
+    <li><strong>Market sizing data</strong> &mdash; due by March 25. Connections guy's deliverable.</li>
+  </ul>
+  <p style="margin-top: 12px;">If these aren't delivered on time, the application either goes in weak (losing 20-30 points) or doesn't go in at all.</p>
+</div>
+
+<p style="color: #52525b; margin-top: 32px; font-size: 13px;">Updated March 15, 2026 &middot; Deadline calculated from Feb 17 publication + 30 working days per regulation Art. 19</p>
+
+</body>
+</html>
