@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grant Pitfalls — Cashback Albania</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #e4e4e7;
+    background: #09090b;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22px; color: #fff; margin-bottom: 4px; }
+  .subtitle { color: #71717a; margin-bottom: 24px; }
+  h2 {
+    font-size: 16px;
+    color: #fff;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #27272a;
+  }
+  h3 { font-size: 14px; color: #a1a1aa; margin-top: 16px; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #27272a; }
+  th { color: #a1a1aa; font-size: 13px; font-weight: 600; }
+  td { font-size: 14px; }
+  .pts { color: #22c55e; font-weight: 700; }
+  .pts-zero { color: #ef4444; font-weight: 700; }
+  .pts-mid { color: #eab308; font-weight: 700; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-warn { background: #7f1d1d; color: #fca5a5; }
+  .tag-info { background: #1e3a5f; color: #93c5fd; }
+  .tag-good { background: #14532d; color: #86efac; }
+  .tag-negotiate { background: #78350f; color: #fcd34d; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .card-warn {
+    background: #18181b;
+    border: 1px solid #7f1d1d;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .card-good {
+    background: #18181b;
+    border: 1px solid #14532d;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .highlight { color: #22c55e; }
+  .warn { color: #fca5a5; }
+  a { color: #60a5fa; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .back { display: inline-block; margin-bottom: 16px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back">&larr; Back to Grant Overview</a>
+
+<h1>Grant Pitfalls & Co-founder Alignment</h1>
+<p class="subtitle">What to resolve before the application &middot; Updated March 15, 2026</p>
+
+<!-- BUDGET CAPS -->
+<h2>1. Budget Caps Are Negotiable, Not Fixed</h2>
+
+<div class="card-good">
+  <p><span class="tag tag-good">KEY INSIGHT</span> The 25%/15%/10% figures in the regulation are <strong>reference starting points</strong>, not hard limits.</p>
+  <p style="margin-top: 8px;">From the regulation (Section 6): percentages can change based on project goals. Every line item must be justified (value, timeline, budget). The evaluation committee can negotiate amounts within their ceilings to better reflect the project.</p>
+</div>
+
+<table>
+  <tr><th>Category</th><th>Reference %</th><th>Reference Max (42K)</th><th>Reality</th></tr>
+  <tr><td>Staff/salaries (gross incl. taxes)</td><td>25%</td><td>~10,500</td><td>Negotiable upward if justified</td></tr>
+  <tr><td>Expert services / R&D / testing</td><td>10%</td><td>~4,200</td><td>Negotiable</td></tr>
+  <tr><td>Sales & marketing</td><td>15%</td><td>~6,300</td><td>Negotiable</td></tr>
+  <tr><td>Goods & services for development</td><td>No cap listed</td><td>—</td><td>Hardware, SaaS, app store fees</td></tr>
+  <tr><td>General expenses (subscriptions, tools)</td><td>No cap listed</td><td>—</td><td>Cloud, domains, monitoring</td></tr>
+  <tr><td>IP protection (patents, trademarks)</td><td>No cap listed</td><td>—</td><td>Trademark registration</td></tr>
+</table>
+
+<div class="card">
+  <p><strong>Pitfall:</strong> Assuming staff is hard-capped at 25% and building the budget around that. The sole developer IS the primary cost — argue for a higher staff allocation in the application.</p>
+</div>
+
+<!-- SALARY vs EQUITY -->
+<h2>2. Salary vs. Equity Tradeoff</h2>
+
+<p>The business plan prices development at $50/hr (market rate). For the grant, the realistic rate is <strong>$20/hr</strong> (Albanian market). This changes everything:</p>
+
+<table>
+  <tr><th>Scenario</th><th>Monthly Pay</th><th>Equity</th><th>8mo Total Salary</th><th>Market Discount Given</th></tr>
+  <tr><td><span class="tag tag-good">A</span> 50% equity, $20/hr</td><td>$3,200</td><td class="pts">50%</td><td>$25,600</td><td>~$25K</td></tr>
+  <tr><td><span class="tag tag-negotiate">B</span> 33% equity, max salary</td><td>$4,000</td><td class="pts-mid">33%</td><td>$32,000</td><td>~$12K</td></tr>
+  <tr><td><span class="tag tag-warn">C</span> 33% equity, side project</td><td>$1,500</td><td class="pts-mid">33%</td><td>$12,000</td><td>~$38K</td></tr>
+</table>
+
+<div class="card-warn">
+  <p><span class="tag tag-warn">WARNING</span> Scenario C is the most likely outcome but the worst deal: biggest market-rate discount AND least equity. If this is the path, all 3 co-founders need to agree on expectations and exit terms upfront.</p>
+</div>
+
+<table>
+  <tr><th>Scenario</th><th>Break-even Company Valuation</th></tr>
+  <tr><td>A: 50%, $20/hr</td><td>$50K — easily reachable</td></tr>
+  <tr><td>B: 33%, max salary</td><td>$36K — reasonable</td></tr>
+  <tr><td>C: 33%, part-time</td><td>$115K — hard to justify</td></tr>
+</table>
+
+<!-- VESTING -->
+<h2>3. Vesting: Equity Is Earned, Not Gifted</h2>
+
+<div class="card">
+  <p><strong>Without vesting:</strong> someone quits after 2 weeks and keeps 33% forever.</p>
+  <p><strong>With vesting:</strong> equity unlocks over time. Leave early = keep only what you earned.</p>
+</div>
+
+<p>Proposed structure for 8-month grant period:</p>
+<table>
+  <tr><th>Period</th><th>What happens</th></tr>
+  <tr><td>Month 1-3</td><td><span class="tag tag-warn">Cliff</span> Nobody owns anything yet. Leave = 0% equity.</td></tr>
+  <tr><td>Month 4</td><td><span class="tag tag-negotiate">Cliff vests</span> 50% of promised equity unlocks (16.5% of 33%).</td></tr>
+  <tr><td>Month 5-8</td><td><span class="tag tag-info">Monthly vesting</span> ~4.125% additional per month.</td></tr>
+  <tr><td>Month 8</td><td><span class="tag tag-good">Fully vested</span> Everyone who stayed has their full share.</td></tr>
+</table>
+
+<!-- DELIVERABLES -->
+<h2>4. Deliverables: Promise Conservative, Deliver Adequate</h2>
+
+<div class="card-warn">
+  <p><span class="tag tag-warn">CRITICAL</span> You define your own deliverables in the application. The committee approves them. Then you're held to what you promised. Over-promising to score higher = under-delivering at tranche reporting.</p>
+</div>
+
+<p>The grant evaluates a Phase 2 (validation) startup. They expect <strong>market validation</strong>, not a finished product.</p>
+
+<h3>What the state expects</h3>
+<ul>
+  <li>Did you build what you said you'd build?</li>
+  <li>Does it show market potential?</li>
+  <li>Were the funds spent as budgeted?</li>
+  <li>Is there a path to commercialization?</li>
+</ul>
+
+<h3>What the state does NOT expect</h3>
+<ul>
+  <li>Profitability</li>
+  <li>Thousands of users</li>
+  <li>Completed banking integration</li>
+  <li>A polished fintech product</li>
+</ul>
+
+<h3>Conservative deliverables per tranche</h3>
+
+<div class="grid">
+  <div class="card">
+    <h3>Tranche 1 — 30% (~12.6K EUR)</h3>
+    <p><em>After contract signing</em></p>
+    <ul>
+      <li>Company registered (LLC)</li>
+      <li>Production DB, auth, CI/CD</li>
+      <li>Development environment live</li>
+    </ul>
+    <p style="margin-top: 8px; color: #71717a;">Translation: "we started"</p>
+  </div>
+
+  <div class="card">
+    <h3>Tranche 2 — 40% (~16.8K EUR)</h3>
+    <p><em>After phase 1 + financial report</em></p>
+    <ul>
+      <li>Working app with real users (even 50)</li>
+      <li>At least 1 merchant onboarded</li>
+      <li>Receipt scanning on fiskalizimi</li>
+      <li>App Store / Play Store presence (beta OK)</li>
+      <li>Banking partner conversations documented</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Tranche 3 — 30% (~12.6K EUR)</h3>
+    <p><em>After final financial report</em></p>
+    <ul>
+      <li>App live with real transactions</li>
+      <li>Multiple merchants</li>
+      <li>Revenue model validated (small revenue OK)</li>
+      <li>Full financial documentation for KLSH</li>
+    </ul>
+  </div>
+</div>
+
+<!-- GRANT LIABILITY -->
+<h2>5. Grant Contract & Liability</h2>
+
+<div class="card">
+  <p>The regulation (Section 22-24) specifies:</p>
+  <ul>
+    <li>Grant contract signed within <strong>30 working days</strong> of winner list approval</li>
+    <li>Contract defines: rules, deadlines, responsibilities, reporting timelines, financial descriptions, fund transfer methods, eligible expenses</li>
+    <li>Financial records must be available to <strong>Kontrolli i Lart&euml; i Shtetit</strong> (Supreme Audit Institution)</li>
+    <li>Monitoring includes document verification <strong>and field visits</strong></li>
+  </ul>
+</div>
+
+<div class="card-warn">
+  <p><span class="tag tag-warn">UNRESOLVED</span> Questions for the meeting:</p>
+  <ul>
+    <li>Who signs the grant contract? The company? An individual co-founder?</li>
+    <li>Who is personally liable if deliverables aren't met?</li>
+    <li>What are the clawback mechanics? (Not explicit in regulation — defined in the contract)</li>
+    <li>If one co-founder exits mid-grant, does it affect the contract?</li>
+  </ul>
+</div>
+
+<!-- EXIT SCENARIOS -->
+<h2>6. Exit Scenarios</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3><span class="tag tag-info">DEV EXITS</span></h3>
+    <ul>
+      <li>Vested equity stays with dev</li>
+      <li>Code is company IP — no dispute</li>
+      <li>Remaining founders continue with grant</li>
+      <li>Define: transition period length</li>
+      <li>Define: buyback formula for vested shares</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-info">CO-FOUNDER EXITS</span></h3>
+    <ul>
+      <li>Vested equity stays, unvested forfeited</li>
+      <li>Remaining founders can buy out at agreed formula</li>
+      <li>Buyback formula TBD: invested cash + (below-market salary &times; months worked)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-warn">PROJECT DIES</span></h3>
+    <ul>
+      <li>Grant funds already disbursed — must account for them per contract</li>
+      <li>KLSH audit exposure</li>
+      <li>Company dissolved per Albanian LLC rules</li>
+      <li>Remaining assets (if any) split by equity</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-negotiate">GRANT NOT AWARDED</span></h3>
+    <ul>
+      <li>Project continues as side project (Scenario C)</li>
+      <li>No financial obligations</li>
+      <li>All co-founders coast at agreed pace</li>
+      <li>Re-evaluate at next grant cycle</li>
+    </ul>
+  </div>
+</div>
+
+<!-- BUDGET HYPOTHETICAL -->
+<h2>7. Realistic Grant Budget (at $20/hr)</h2>
+
+<table>
+  <tr><th>Item</th><th>Cost (EUR)</th><th>Category</th></tr>
+  <tr><td>Developer salary — 8 months gross</td><td>20,000-25,000</td><td>Staff</td></tr>
+  <tr><td>Mac for iOS builds (Albanian market price)</td><td>900-1,200</td><td>Goods & services</td></tr>
+  <tr><td>Test devices (iPhone SE + Android)</td><td>600-800</td><td>Goods & services</td></tr>
+  <tr><td>Cloud infrastructure (8 months)</td><td>500-1,000</td><td>General expenses</td></tr>
+  <tr><td>SaaS tools (Sentry, email, monitoring)</td><td>500-800</td><td>General expenses</td></tr>
+  <tr><td>App Store + Play Store fees</td><td>~125</td><td>General expenses</td></tr>
+  <tr><td>Design (Albanian freelancer)</td><td>1,500-2,500</td><td>Expert services</td></tr>
+  <tr><td>Security audit / external testing</td><td>2,000-4,000</td><td>Expert services</td></tr>
+  <tr><td>Marketing / merchant acquisition</td><td>3,000-5,000</td><td>Marketing</td></tr>
+  <tr><td>Legal (LLC + contracts)</td><td>1,000-2,000</td><td>General expenses</td></tr>
+  <tr><td>Trademark / IP filing</td><td>200-400</td><td>IP protection</td></tr>
+  <tr><td>Domain, certs, misc</td><td>200-400</td><td>General expenses</td></tr>
+  <tr style="border-top: 2px solid #27272a;"><td><strong>Total</strong></td><td><strong>30,500-43,125</strong></td><td></td></tr>
+</table>
+
+<div class="card-good">
+  <p><span class="tag tag-good">FITS</span> At $20/hr, the project fits within the 42K EUR grant. The budget is honest and justifiable — not padded, not wasteful. The committee scores "budget appropriateness" (10 pts).</p>
+</div>
+
+<!-- HARDWARE PRICING -->
+<h2>8. Hardware: Use Albanian Market Prices</h2>
+
+<div class="card-warn">
+  <p><span class="tag tag-warn">PITFALL</span> The business plan doc uses US retail prices. Albanian/EU prices are 30-50% higher due to import markups, VAT, and no Apple Store presence. The grant committee knows local prices — US pricing looks uninformed.</p>
+</div>
+
+<table>
+  <tr><th>Item</th><th>US Price</th><th>Albanian Market Price</th></tr>
+  <tr><td>Mac Mini M2</td><td>$600-800</td><td>&euro;900-1,200</td></tr>
+  <tr><td>iPhone SE (test device)</td><td>$400-500</td><td>&euro;450-600</td></tr>
+  <tr><td>Android mid-range (test device)</td><td>$200-300</td><td>&euro;200-350</td></tr>
+</table>
+
+<!-- CO-FINANCING -->
+<h2>9. The 15% Co-financing Question</h2>
+
+<div class="card">
+  <p>Grant covers 85%. The remaining <strong>15% (~6,300 EUR)</strong> must come from the founders.</p>
+  <p>Eligible sources: personal funds, operating revenue, private investment, equity financing, or any legal source excluding other state funding in the same fiscal year.</p>
+</div>
+
+<div class="card-warn">
+  <p><span class="tag tag-warn">RESOLVE IN MEETING</span> Who pays the 6,300 EUR? Split equally (2,100 each)? Proportional to equity? One co-founder covers it? This needs an answer before the application.</p>
+</div>
+
+<p style="color: #52525b; margin-top: 32px; font-size: 13px;">Updated March 15, 2026 &middot; Based on Grant 2026 Regulation (Rregullore e Thirrjes Grant2026, Versioni 1, Shkurt 2026) + co-founder meeting prep</p>
+
+</body>
+</html>
